@@ -13,9 +13,13 @@ terms in Dictyostelium genes that are unavailable in the training phase.
 This example demonstrates how latent matrices estimated by data fusion
 can be utilized for association prediction.
 """
+from builtins import enumerate
+
 print(__doc__)
 
-from sklearn import cross_validation, metrics
+# from sklearn import cross_validation
+from sklearn import metrics
+from sklearn.model_selection import KFold
 import numpy as np
 
 from skfusion import datasets
@@ -25,7 +29,7 @@ from skfusion import fusion as skf
 def main():
     n_folds = 10
     n_genes = dicty[gene][go_term][0].data.shape[0]
-    cv = cross_validation.KFold(n_genes, n_folds=n_folds)
+    kfold = KFold(n_splits=n_folds)
     fold_mse = np.zeros(n_folds)
     ann_mask = np.zeros_like(dicty[gene][go_term][0].data).astype('bool')
 
@@ -36,7 +40,8 @@ def main():
     fusion_graph = skf.FusionGraph(relations)
     fuser = skf.Dfmc(max_iter=30, n_run=1, init_type='random', random_state=0)
 
-    for i, (train_idx, test_idx) in enumerate(cv):
+    data_idx = [x for x in range(n_genes)]
+    for i, (train_idx, test_idx) in enumerate(kfold.split(data_idx)):
         ann_mask[:] = False
         ann_mask[test_idx, :] = True
         fusion_graph[gene][go_term][0].mask = ann_mask

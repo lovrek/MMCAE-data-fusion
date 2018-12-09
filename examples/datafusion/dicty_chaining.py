@@ -18,7 +18,8 @@ print(__doc__)
 
 from functools import reduce
 
-from sklearn import cross_validation, ensemble, metrics
+from sklearn import ensemble, metrics
+from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
 from skfusion import datasets
@@ -78,15 +79,17 @@ def predict_term(train_idx, test_idx, term_idx):
 def main():
     n_folds = 10
     n_genes, n_terms = dicty[gene][go_term][0].data.shape
+    X = dicty[gene][go_term][0].data
     for t, term_idx in enumerate(range(n_terms)):
         y_true = dicty[gene][go_term][0].data[:, term_idx]
         cls_size = int(y_true.sum())
         if cls_size > n_genes - 20 or cls_size < 20:
             continue
 
-        cv = cross_validation.StratifiedKFold(y_true, n_folds=n_folds)
+        skf = StratifiedKFold(n_splits=n_folds)
         y_pred = np.zeros_like(y_true)
-        for i, (train_idx, test_idx) in enumerate(cv):
+
+        for i, (train_idx, test_idx) in enumerate(skf.split(X, y_true)):
             y_pred[test_idx] = predict_term(train_idx, test_idx, term_idx)
 
         term_auc = metrics.roc_auc_score(y_true, y_pred)

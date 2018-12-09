@@ -16,7 +16,8 @@ instead of on raw data.
 """
 print(__doc__)
 
-from sklearn import cross_validation, ensemble, metrics
+from sklearn import ensemble, metrics
+from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
 from skfusion import datasets
@@ -63,6 +64,7 @@ def rf(train_idx, test_idx, term_idx):
 def main():
     n_folds = 10
     n_genes, n_terms = dicty[gene][go_term][0].data.shape
+    X = dicty[gene][go_term][0].data
 
     for t, term_idx in enumerate(range(n_terms)):
         term = dicty[gene][go_term][0].col_names[term_idx]
@@ -73,10 +75,10 @@ def main():
         if cls_size > n_genes - 20 or cls_size < 20:
             continue
 
-        cv = cross_validation.StratifiedKFold(y_true, n_folds=n_folds)
+        skf = StratifiedKFold(n_splits=n_folds)
         y_pred_mf = np.zeros_like(y_true)
         y_pred_rf = np.zeros_like(y_true)
-        for i, (train_idx, test_idx) in enumerate(cv):
+        for i, (train_idx, test_idx) in enumerate(skf.split(X, y_true)):
             print("\tFold: %d" % (i+1))
             # Let"s make predictions from fused data representation
             y_pred_mf[test_idx] = mf(train_idx, test_idx, term_idx)
