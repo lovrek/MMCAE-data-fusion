@@ -21,5 +21,12 @@
  ## Prediction DFMF
   - Dictyostelium Association: 0.0391 (MSE)
   - Dictyostelium Chaining: 0.54 (AUC) - max: 0.8036 (AUC)
-  - Dictyostelium Factorization: (MF - matrix factorization) - (RF - random forest)
-  
+  - Dictyostelium Factorization: 0.922 (MF - matrix factorization) - 0.884 (RF - random forest)
+  - Movielens Competition (RMSE): 
+    - mean rating: 0.23856
+    - mean user: 0.21979
+    - mean movie: 0.21657
+    - ratings DFMF: 0.20421
+    - ratings DFMC: 0.21656
+    - PCA: 0.35984
+    - NMF: 0.61969
