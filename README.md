@@ -18,6 +18,13 @@
   
   ![alt text](datasets/data/pharma/Pharma_Schem.PNG)
   
+  MovieLens database:
+  - User - Movie (rating): [706, 1000]
+  - Movie - Genre (movie genres): [1000, 20]
+  - Movie - Actor (movie actors): [1000, 1000]
+  
+  ![alt_text](datasets/data/movielens/MovieLens_Scheme.PNG)
+  
  ## Prediction DFMF
   - Dictyostelium Association: 0.0391 (MSE)
   - Dictyostelium Chaining: 0.54 (AUC) - max: 0.8036 (AUC)

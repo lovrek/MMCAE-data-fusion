@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="75c742de-6aa9-4169-a490-f1c5663cf658" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/datafusion/movielens_completion.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/datafusion/movielens_completion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/datafusion/pharma_chaining.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/datafusion/pharma_chaining.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasets/base.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="605">
-              <caret line="125" selection-start-line="125" selection-end-line="125" />
+            <state relative-caret-position="2595">
+              <caret line="173" lean-forward="true" selection-start-line="173" selection-end-line="173" />
               <folding>
                 <element signature="e#42#53#0" expanded="true" />
               </folding>
@@ -28,7 +29,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_association.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
+            <state relative-caret-position="945">
               <caret line="63" selection-start-line="63" selection-end-line="63" />
             </state>
           </provider>
@@ -37,7 +38,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_chaining.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
+            <state relative-caret-position="1485">
               <caret line="106" selection-start-line="106" selection-end-line="106" />
               <folding>
                 <element signature="e#736#764#0" expanded="true" />
@@ -49,21 +50,18 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_factorization.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
+            <state relative-caret-position="1125">
               <caret line="80" column="66" selection-start-line="80" selection-start-column="66" selection-end-line="80" selection-end-column="66" />
-              <folding>
-                <element signature="e#734#789#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="360">
-                <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+              <first_editor relative-caret-position="375">
+                <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
               </first_editor>
               <second_editor />
             </state>
@@ -73,7 +71,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/pharma_chaining.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="885">
+            <state relative-caret-position="1740">
               <caret line="116" selection-start-line="116" selection-end-line="116" />
               <folding>
                 <element signature="e#426#454#0" expanded="true" />
@@ -82,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/movielens_completion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
+            <state relative-caret-position="2865">
+              <caret line="191" selection-start-line="191" selection-end-line="191" />
               <folding>
                 <element signature="e#443#461#0" expanded="true" />
               </folding>
@@ -94,7 +92,43 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/autoencoder/simple_autoencoder.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="41" column="45" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
+              <folding>
+                <element signature="e#0#93#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/autoencoder/deep_autoencoder.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/autoencoder/variational_autoencoder.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1815">
+              <caret line="130" column="9" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#66#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -111,21 +145,24 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/datasets/base.py" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/examples/datafusion/dicty_factorization.py" />
         <option value="$PROJECT_DIR$/examples/datafusion/dicty_chaining.py" />
         <option value="$PROJECT_DIR$/examples/datafusion/dicty_association.py" />
         <option value="$PROJECT_DIR$/examples/datafusion/pharma_chaining.py" />
         <option value="$PROJECT_DIR$/examples/datafusion/movielens_completion.py" />
+        <option value="$PROJECT_DIR$/examples/autoencoder/simple_autoencoder.py" />
+        <option value="$PROJECT_DIR$/examples/autoencoder/deep_autoencoder.py" />
+        <option value="$PROJECT_DIR$/examples/autoencoder/variational_autoencoder.py" />
+        <option value="$PROJECT_DIR$/datasets/base.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="67" />
     <option name="y" value="25" />
     <option name="width" value="1247" />
-    <option name="height" value="1415" />
+    <option name="height" value="1053" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -133,13 +170,37 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="b2602c69:ProjectViewProjectNode" />
               <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="dicty" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="movielens" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization" type="b2602c69:ProjectViewProjectNode" />
@@ -165,6 +226,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -222,18 +284,19 @@
       <workItem from="1543772871659" duration="887000" />
       <workItem from="1543786924834" duration="642000" />
       <workItem from="1543787744495" duration="9278000" />
-      <workItem from="1544356115269" duration="15458000" />
+      <workItem from="1544356115269" duration="18127000" />
+      <workItem from="1544386463869" duration="2287000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27064000" />
+    <option name="totallyTimeSpent" value="32020000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1247" height="1415" extended-state="4" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29392174" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19867183" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -247,7 +310,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3289269" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="11" visible="true" weight="0.3724728" />
+      <window_info anchor="bottom" id="Python Console" order="11" visible="true" weight="0.37149027" />
       <window_info anchor="bottom" id="Terminal" order="12" weight="0.3273717" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -261,16 +324,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/datasets/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="605">
-          <caret line="125" selection-start-line="125" selection-end-line="125" />
-          <folding>
-            <element signature="e#42#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/env/lib/python3.6/site-packages/sklearn/ensemble/base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -281,19 +334,16 @@
     <entry file="file://$PROJECT_DIR$/datasets/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="360">
-            <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_association.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="945">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_chaining.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
+        <state relative-caret-position="1485">
           <caret line="106" selection-start-line="106" selection-end-line="106" />
           <folding>
             <element signature="e#736#764#0" expanded="true" />
@@ -301,16 +351,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_association.py">
+    <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_factorization.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
+        <state relative-caret-position="1125">
+          <caret line="80" column="66" selection-start-line="80" selection-start-column="66" selection-end-line="80" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/autoencoder/simple_autoencoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="41" column="45" selection-start-line="41" selection-start-column="45" selection-end-line="41" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#93#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/autoencoder/deep_autoencoder.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/autoencoder/variational_autoencoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1815">
+          <caret line="130" column="9" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/datafusion/movielens_completion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2865">
+          <caret line="191" selection-start-line="191" selection-end-line="191" />
+          <folding>
+            <element signature="e#443#461#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2595">
+          <caret line="173" lean-forward="true" selection-start-line="173" selection-end-line="173" />
+          <folding>
+            <element signature="e#42#53#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/datafusion/pharma_chaining.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
+        <state relative-caret-position="1740">
           <caret line="116" selection-start-line="116" selection-end-line="116" />
           <folding>
             <element signature="e#426#454#0" expanded="true" />
@@ -318,23 +411,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_factorization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="80" column="66" selection-start-line="80" selection-start-column="66" selection-end-line="80" selection-end-column="66" />
-          <folding>
-            <element signature="e#734#789#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/datafusion/movielens_completion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
-          <folding>
-            <element signature="e#443#461#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="375">
+            <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

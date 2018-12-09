@@ -12,7 +12,7 @@ print(__doc__)
 
 from functools import reduce
 
-from sklearn import cross_validation, metrics, ensemble
+from sklearn import metrics, ensemble
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
