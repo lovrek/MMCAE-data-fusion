@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="75c742de-6aa9-4169-a490-f1c5663cf658" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/datafusion/dicty_association.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/datafusion/dicty_association.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/datafusion/dicty_chaining.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/datafusion/dicty_chaining.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/datafusion/dicty_factorization.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/datafusion/dicty_factorization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/datafusion/movielens_completion.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/datafusion/movielens_completion.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_association.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="43" column="66" selection-start-line="43" selection-start-column="58" selection-end-line="43" selection-end-column="66" />
+            <state relative-caret-position="650">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
             </state>
           </provider>
         </entry>
@@ -40,8 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_chaining.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="91" column="18" selection-start-line="91" selection-start-column="18" selection-end-line="91" selection-end-column="18" />
+            <state relative-caret-position="650">
+              <caret line="106" selection-start-line="106" selection-end-line="106" />
               <folding>
                 <element signature="e#736#764#0" expanded="true" />
               </folding>
@@ -52,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_factorization.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="75" column="20" lean-forward="true" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="20" />
+            <state relative-caret-position="350">
+              <caret line="80" column="66" selection-start-line="80" selection-start-column="66" selection-end-line="80" selection-end-column="66" />
               <folding>
                 <element signature="e#734#789#0" expanded="true" />
               </folding>
@@ -61,12 +58,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="345">
-                <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+              <first_editor relative-caret-position="360">
+                <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
               </first_editor>
               <second_editor />
             </state>
@@ -76,8 +73,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/datafusion/pharma_chaining.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="55" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="55" />
+            <state relative-caret-position="885">
+              <caret line="116" selection-start-line="116" selection-end-line="116" />
+              <folding>
+                <element signature="e#426#454#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/examples/datafusion/movielens_completion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
+              <folding>
+                <element signature="e#443#461#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,8 +99,10 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>join</find>
-      <find>cross_validation</find>
       <find>ensemble</find>
+      <find>RandomizedPCA</find>
+      <find>cross_validation</find>
+      <find>skf</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -98,10 +112,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/datasets/base.py" />
-        <option value="$PROJECT_DIR$/examples/datafusion/dicty_association.py" />
-        <option value="$PROJECT_DIR$/examples/datafusion/dicty_chaining.py" />
-        <option value="$PROJECT_DIR$/examples/datafusion/dicty_factorization.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/examples/datafusion/dicty_factorization.py" />
+        <option value="$PROJECT_DIR$/examples/datafusion/dicty_chaining.py" />
+        <option value="$PROJECT_DIR$/examples/datafusion/dicty_association.py" />
+        <option value="$PROJECT_DIR$/examples/datafusion/pharma_chaining.py" />
+        <option value="$PROJECT_DIR$/examples/datafusion/movielens_completion.py" />
       </list>
     </option>
   </component>
@@ -206,15 +222,16 @@
       <workItem from="1543772871659" duration="887000" />
       <workItem from="1543786924834" duration="642000" />
       <workItem from="1543787744495" duration="9278000" />
-      <workItem from="1544356115269" duration="10483000" />
+      <workItem from="1544356115269" duration="15458000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22089000" />
+    <option name="totallyTimeSpent" value="27064000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1247" height="1415" extended-state="4" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29392174" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -264,47 +281,60 @@
     <entry file="file://$PROJECT_DIR$/datasets/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/datafusion/pharma_chaining.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="55" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_association.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="43" column="66" selection-start-line="43" selection-start-column="58" selection-end-line="43" selection-end-column="66" />
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="360">
+            <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_chaining.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="91" column="18" selection-start-line="91" selection-start-column="18" selection-end-line="91" selection-end-column="18" />
+        <state relative-caret-position="650">
+          <caret line="106" selection-start-line="106" selection-end-line="106" />
           <folding>
             <element signature="e#736#764#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_association.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="650">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/datafusion/pharma_chaining.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="116" selection-start-line="116" selection-end-line="116" />
+          <folding>
+            <element signature="e#426#454#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/examples/datafusion/dicty_factorization.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="75" column="20" lean-forward="true" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="20" />
+        <state relative-caret-position="350">
+          <caret line="80" column="66" selection-start-line="80" selection-start-column="66" selection-end-line="80" selection-end-column="66" />
           <folding>
             <element signature="e#734#789#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="345">
-            <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/examples/datafusion/movielens_completion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
+          <folding>
+            <element signature="e#443#461#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

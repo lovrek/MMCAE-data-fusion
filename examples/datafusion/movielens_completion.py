@@ -17,7 +17,7 @@ from skfusion import datasets
 from skfusion import fusion as skf
 
 # PCA (requires scikit-learn module)
-from sklearn.decomposition import RandomizedPCA
+from sklearn.decomposition import PCA
 
 # NMF (requires Nimfa module)
 import nimfa
@@ -175,7 +175,7 @@ def main():
     score = rmse(R12_true[~hidden], R12_pred[~hidden])
     print('RMSE(in-sample dfmc): {}'.format(score))
 
-    model = RandomizedPCA(n_components=10)
+    model = PCA(n_components=10)
     R12 = graph['User ratings'].data.filled()
     pca_mod = model.fit(R12)
     R12_pred = scale(pca_mod.inverse_transform(pca_mod.transform(R12)), 0, 1)
