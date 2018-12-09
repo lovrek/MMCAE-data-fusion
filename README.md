@@ -17,3 +17,9 @@
   - Chemical - Chemical [1260, 1260]
   
   ![alt text](datasets/data/pharma/Pharma_Schem.PNG)
+  
+ ## Prediction DFMF
+  - Dictyostelium Association: 0.0391 (MSE)
+  - Dictyostelium Chaining: 0.54 (AUC) - max: 0.8036 (AUC)
+  - Dictyostelium Factorization: (MF - matrix factorization) - (RF - random forest)
+  
