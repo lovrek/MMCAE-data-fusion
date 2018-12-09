@@ -1,14 +1,14 @@
 # Data-fusion-of-biological-data-using-multimodal-neural-networks-andmatrix-factorization
 
 ## Datasets
-  Dictyostelium:
+  ### Dictyostelium:
   - Gene - GO term [1219, 161]
   - Gene - Exeriment conditions [1219, 282]
   - Gene - Gene [1219, 1219]
   
   ![alt text](datasets/data/dicty/Dicty_Schem.PNG)
   
-  The pharmacology domain:
+  #### The pharmacology domain:
   - Chemical - Action [1260, 130]
   - Chemical - PMID [1260, 7948]
   - Chemical - Depositor [1260, 189]
@@ -18,7 +18,7 @@
   
   ![alt text](datasets/data/pharma/Pharma_Schem.PNG)
   
-  MovieLens database:
+  ### MovieLens database:
   - User - Movie (rating): [706, 1000]
   - Movie - Genre (movie genres): [1000, 20]
   - Movie - Actor (movie actors): [1000, 1000]
