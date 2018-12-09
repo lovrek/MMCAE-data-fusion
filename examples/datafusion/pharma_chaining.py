@@ -13,6 +13,7 @@ print(__doc__)
 from functools import reduce
 
 from sklearn import cross_validation, metrics, ensemble
+from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
 from skfusion import datasets
@@ -86,15 +87,16 @@ def predict_action(train_idx, test_idx, action_idx):
 def main():
     n_folds = 10
     n_chemicals, n_actions = pharma[chemical][action][0].data.shape
+    X = pharma[chemical][action][0].data
     for t, action_idx in enumerate(range(n_actions)):
         y_true = pharma[chemical][action][0].data[:, action_idx]
         cls_size = int(y_true.sum())
         if cls_size > n_chemicals - 20 or cls_size < 20:
             continue
 
-        cv = cross_validation.StratifiedKFold(y_true, n_folds=n_folds)
+        stratified_KFold = StratifiedKFold(n_splits=n_folds)
         y_pred = np.zeros_like(y_true)
-        for i, (train_idx, test_idx) in enumerate(cv):
+        for i, (train_idx, test_idx) in enumerate(stratified_KFold.split(X, y_true)):
             y_pred[test_idx] = predict_action(train_idx, test_idx, action_idx)
 
         action_auc = metrics.roc_auc_score(y_true, y_pred)

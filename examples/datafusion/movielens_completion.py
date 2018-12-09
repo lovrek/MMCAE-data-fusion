@@ -16,6 +16,12 @@ import numpy as np
 from skfusion import datasets
 from skfusion import fusion as skf
 
+# PCA (requires scikit-learn module)
+from sklearn.decomposition import RandomizedPCA
+
+# NMF (requires Nimfa module)
+import nimfa
+
 
 def load_data():
     ratings_data, movies_data, actors_data = datasets.load_movielens()
@@ -169,8 +175,6 @@ def main():
     score = rmse(R12_true[~hidden], R12_pred[~hidden])
     print('RMSE(in-sample dfmc): {}'.format(score))
 
-    # PCA (requires scikit-learn module)
-    from sklearn.decomposition import RandomizedPCA
     model = RandomizedPCA(n_components=10)
     R12 = graph['User ratings'].data.filled()
     pca_mod = model.fit(R12)
@@ -178,8 +182,6 @@ def main():
     score = rmse(R12_true[hidden], R12_pred[hidden])
     print('RMSE(pca): {}'.format(score))
 
-    # NMF (requires Nimfa module)
-    import nimfa
     R12 = graph['User ratings'].data.filled()
     R12[R12 < 0] = 0
     lsnmf = nimfa.Lsnmf(R12, seed='random_vcol', rank=50, max_iter=100)

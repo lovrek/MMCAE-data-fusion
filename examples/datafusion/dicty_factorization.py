@@ -75,10 +75,10 @@ def main():
         if cls_size > n_genes - 20 or cls_size < 20:
             continue
 
-        skf = StratifiedKFold(n_splits=n_folds)
+        stratified_KFold = StratifiedKFold(n_splits=n_folds)
         y_pred_mf = np.zeros_like(y_true)
         y_pred_rf = np.zeros_like(y_true)
-        for i, (train_idx, test_idx) in enumerate(skf.split(X, y_true)):
+        for i, (train_idx, test_idx) in enumerate(stratified_KFold.split(X, y_true)):
             print("\tFold: %d" % (i+1))
             # Let"s make predictions from fused data representation
             y_pred_mf[test_idx] = mf(train_idx, test_idx, term_idx)
