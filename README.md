@@ -8,7 +8,7 @@
   
   ![alt text](datasets/data/dicty/Dicty_Schem.PNG)
   
-  #### The pharmacology domain:
+  ### The pharmacology domain:
   - Chemical - Action [1260, 130]
   - Chemical - PMID [1260, 7948]
   - Chemical - Depositor [1260, 189]
