@@ -1,6 +1,6 @@
 FROM tensorflow/tensorflow:1.10.1-gpu-py3
 
-RUN pip3 --no-cache-dir install scikit-learn scikit-fusion matplotlib xlrd
+RUN pip3 --no-cache-dir install scikit-learn scikit-fusion matplotlib nimfa
 
 # TensorBoard & Jupyter Notebook
 EXPOSE 6006 8888
