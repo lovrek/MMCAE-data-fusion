@@ -1,0 +1,29 @@
+
+=====================================================================
+Fusion of user ratings data, movie genres and data about movie actors
+=====================================================================
+
+This example demonstrates matrix completion on user-movie preference
+data.
+
+DISCLAIMER: Results can be improved if ideas from collaborative
+filtering (regularization, user bias, item bias, etc.) are applied.
+
+User ratings: (706, 1000)
+Movie genres: (1000, 20)
+Actors played: (1000, 1000)
+Ranks: 
+User: 35
+Movie: 50
+Genre: 5
+Actor: 50
+RMSE(mean rating): 0.23604493075793648
+RMSE(mean user): 0.2232399342692719
+RMSE(mean movie): 0.21789360469505936
+RMSE(ratings; out-of-sample dfmf): 0.20679691444003584
+RMSE(ratings; out-of-sample dfmf): 0.20678640231466786
+RMSE(ratings; out-of-sample dfmc): 0.22390968637785078
+RMSE(ratings; out-of-sample dfmc): 0.22423444340307835
+RMSE(in-sample dfmc): 0.04282053875398991
+RMSE(pca): 0.39689366050243835
+RMSE(nmf): 0.6299850380516783
