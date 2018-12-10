@@ -1,0 +1,65 @@
+
+================================================================
+Fusion of six data sources for pharmacological action prediction
+================================================================
+
+This example demonstrates how latent matrices estimated by data
+fusion can be utilized for association prediction. The prediction
+is done by random forest on features construction through reverse
+chaining.
+
+( 3/130):  General                       AUC: 0.8462
+( 4/130): Analgesics                     AUC: 0.8565
+( 6/130): GABA Agonists                  AUC: 0.8123
+( 7/130): Histamine Agents               AUC: 0.6593
+( 8/130): Dermatologic Agents            AUC: 0.8514
+(10/130): Anti-HIV Agents                AUC: 0.8487
+(11/130): Psychotropic Drugs             AUC: 0.9546
+(12/130): Hormones                       AUC: 0.7461
+(13/130): Enzyme Inhibitors              AUC: 0.8074
+(14/130): Autonomic Agents               AUC: 0.7679
+(17/130): Central Nervous System Stimulants AUC: 0.7513
+(20/130): Purinergic Agonists            AUC: 0.9100
+(23/130): Chelating Agents               AUC: 0.6903
+(25/130): Contraceptives                 AUC: 0.7970
+(26/130):  Oral                          AUC: 0.7315
+(28/130): Anti-Retroviral Agents         AUC: 0.7468
+(33/130): Cyclooxygenase Inhibitors      AUC: 0.9453
+(35/130): Topoisomerase Inhibitors       AUC: 0.7925
+(36/130): Fibrin Modulating Agents       AUC: 0.7054
+(37/130): Serotonin Agents               AUC: 0.9660
+(38/130): Immunologic Factors            AUC: 0.8729
+(39/130): Narcotics                      AUC: 0.8858
+(44/130): Antioxidants                   AUC: 0.9181
+(45/130): Alkylating Agents              AUC: 0.8377
+(51/130): Excitatory Amino Acid Agents   AUC: 0.7379
+(52/130): Fertility Agents               AUC: 0.6526
+(54/130): Adrenergic beta-Agonists       AUC: 0.8501
+(57/130): Hemostatics                    AUC: 0.8816
+(62/130): Purinergic P1 Receptor Agonists AUC: 0.7477
+(64/130):  Female                        AUC: 0.7959
+(66/130): Mitosis Modulators             AUC: 0.8438
+(67/130): Antiprotozoal Agents           AUC: 0.7784
+(68/130): Antitubercular Agents          AUC: 0.8336
+(69/130): Antidepressive Agents          AUC: 0.9079
+(70/130): Immunosuppressive Agents       AUC: 0.8840
+(73/130): Histamine Antagonists          AUC: 0.8785
+(76/130):  and Hormone Antagonists       AUC: 0.7894
+(81/130):  Intravenous                   AUC: 0.6768
+(85/130): Peripheral Nervous System Agents AUC: 0.6989
+(86/130): Purinergic Agents              AUC: 0.8563
+(89/130): Cannabinoid Receptor Modulators AUC: 0.5202
+(91/130): Gout Suppressants              AUC: 0.7610
+(94/130): Therapeutic Uses               AUC: 0.7689
+(97/130): Hormone Antagonists            AUC: 0.7475
+(100/130): Membrane Transport Modulators  AUC: 0.8266
+(101/130): Contraceptive Agents           AUC: 0.8156
+(109/130): Anti-Obesity Agents            AUC: 0.8436
+(110/130): Antirheumatic Agents           AUC: 0.7894
+(111/130): Sensory System Agents          AUC: 0.8076
+(118/130): Anticoagulants                 AUC: 0.7751
+(120/130): Central Nervous System Agents  AUC: 0.8366
+(122/130): Anthelmintics                  AUC: 0.6715
+(124/130): Antinematodal Agents           AUC: 0.7199
+(125/130): Vasoconstrictor Agents         AUC: 0.6010
+(128/130):  Male                          AUC: 0.8389
