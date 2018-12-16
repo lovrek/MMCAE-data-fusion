@@ -1,0 +1,704 @@
+
+==========================================================================
+Fusion of three data sources for gene function prediction in Dictyostelium
+==========================================================================
+
+Fuse three data sets: gene expression data (Miranda et al., 2013, PLoS One),
+slim gene annotations from Gene Ontology and protein-protein interaction
+network from STRING database.
+
+Learnt latent matrix factors are utilized for the prediction of slim GO
+terms in Dictyostelium genes that are unavailable in the training phase.
+
+This example demonstrates how predictive performance can
+be improved if prediction model relies on features extracted by data fusion
+instead of on raw data.
+
+Term: GO:0005811
+Term: GO:0005783
+Term: GO:0061024
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+( 3/116): GO:0061024 MF: 0.519 RF: 0.541
+Term: GO:0007009
+Term: GO:0007165
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+( 5/116): GO:0007165 MF: 0.671 RF: 0.664
+Term: GO:0005198
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+( 6/116): GO:0005198 MF: 0.938 RF: 0.922
+Term: GO:0007005
+Term: GO:0005654
+Term: GO:0000003
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+( 9/116): GO:0000003 MF: 0.627 RF: 0.641
+Term: GO:0016023
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(10/116): GO:0016023 MF: 0.816 RF: 0.818
+Term: GO:0005777
+Term: GO:0016746
+Term: GO:0005794
+Term: GO:0003924
+Term: GO:0006605
+Term: GO:0043234
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(16/116): GO:0043234 MF: 0.717 RF: 0.704
+Term: GO:0016192
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(17/116): GO:0016192 MF: 0.657 RF: 0.669
+Term: GO:0048870
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(18/116): GO:0048870 MF: 0.535 RF: 0.485
+Term: GO:0005829
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(19/116): GO:0005829 MF: 0.550 RF: 0.546
+Term: GO:0030198
+Term: GO:0016757
+Term: GO:0016810
+Term: GO:0044281
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(23/116): GO:0044281 MF: 0.524 RF: 0.520
+Term: GO:0022607
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(24/116): GO:0022607 MF: 0.576 RF: 0.555
+Term: GO:0032182
+Term: GO:0003674
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(26/116): GO:0003674 MF: 0.665 RF: 0.671
+Term: GO:0016887
+Term: GO:0003677
+Term: GO:0008168
+Term: GO:0000228
+Term: GO:0043226
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(31/116): GO:0043226 MF: 0.643 RF: 0.653
+Term: GO:0008219
+Term: GO:0005856
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(33/116): GO:0005856 MF: 0.740 RF: 0.778
+Term: GO:0051186
+Term: GO:0000902
+Term: GO:0042254
+Term: GO:0065003
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(37/116): GO:0065003 MF: 0.564 RF: 0.563
+Term: GO:0016765
+Term: GO:0006914
+Term: GO:0048646
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(40/116): GO:0048646 MF: 0.627 RF: 0.637
+Term: GO:0016301
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(41/116): GO:0016301 MF: 0.532 RF: 0.560
+Term: GO:0006629
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(42/116): GO:0006629 MF: 0.474 RF: 0.485
+Term: GO:0006810
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(43/116): GO:0006810 MF: 0.642 RF: 0.643
+Term: GO:0006950
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(44/116): GO:0006950 MF: 0.614 RF: 0.615
+Term: GO:0008150
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(45/116): GO:0008150 MF: 0.715 RF: 0.717
+Term: GO:0034655
+Term: GO:0019748
+Term: GO:0030674
+Term: GO:0005840
+Term: GO:0008092
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(50/116): GO:0008092 MF: 0.743 RF: 0.754
+Term: GO:0005773
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(51/116): GO:0005773 MF: 0.573 RF: 0.561
+Term: GO:0005634
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(52/116): GO:0005634 MF: 0.606 RF: 0.593
+Term: GO:0016791
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(53/116): GO:0016791 MF: 0.589 RF: 0.622
+Term: GO:0030154
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(54/116): GO:0030154 MF: 0.686 RF: 0.681
+Term: GO:0016798
+Term: GO:0019899
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(56/116): GO:0019899 MF: 0.606 RF: 0.621
+Term: GO:0034641
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(57/116): GO:0034641 MF: 0.591 RF: 0.582
+Term: GO:0007059
+Term: GO:0008233
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(59/116): GO:0008233 MF: 0.836 RF: 0.837
+Term: GO:0030705
+Term: GO:0007049
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(61/116): GO:0007049 MF: 0.674 RF: 0.685
+Term: GO:0016491
+Term: GO:0005737
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(63/116): GO:0005737 MF: 0.560 RF: 0.571
+Term: GO:0005730
+Term: GO:0009056
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(65/116): GO:0009056 MF: 0.535 RF: 0.549
+Term: GO:0016829
+Term: GO:0005635
+Term: GO:0005739
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(68/116): GO:0005739 MF: 0.743 RF: 0.751
+Term: GO:0043167
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(69/116): GO:0043167 MF: 0.531 RF: 0.516
+Term: GO:0008283
+Term: GO:0008135
+Term: GO:0016779
+Term: GO:0005975
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(73/116): GO:0005975 MF: 0.588 RF: 0.620
+Term: GO:0055085
+Term: GO:0016853
+Term: GO:0007034
+Term: GO:0004518
+Term: GO:0001071
+Term: GO:0005623
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(79/116): GO:0005623 MF: 0.669 RF: 0.663
+Term: GO:0005622
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(80/116): GO:0005622 MF: 0.648 RF: 0.649
+Term: GO:0003723
+Term: GO:0042592
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(82/116): GO:0042592 MF: 0.484 RF: 0.532
+Term: GO:0004871
+Term: GO:0006091
+Term: GO:0007067
+Term: GO:0051301
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(86/116): GO:0051301 MF: 0.665 RF: 0.685
+Term: GO:0005575
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(87/116): GO:0005575 MF: 0.655 RF: 0.656
+Term: GO:0040007
+Term: GO:0005618
+Term: GO:0006520
+Term: GO:0005815
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(91/116): GO:0005815 MF: 0.677 RF: 0.689
+Term: GO:0071554
+Term: GO:0005694
+Term: GO:0008565
+Term: GO:0030234
+Term: GO:0006461
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(96/116): GO:0006461 MF: 0.588 RF: 0.583
+Term: GO:0006913
+Term: GO:0006464
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(98/116): GO:0006464 MF: 0.610 RF: 0.604
+Term: GO:0008289
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(99/116): GO:0008289 MF: 0.546 RF: 0.590
+Term: GO:0009058
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(100/116): GO:0009058 MF: 0.550 RF: 0.542
+Term: GO:0005886
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(101/116): GO:0005886 MF: 0.711 RF: 0.741
+Term: GO:0007155
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(102/116): GO:0007155 MF: 0.554 RF: 0.537
+Term: GO:0016874
+Term: GO:0005615
+Term: GO:0040011
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(105/116): GO:0040011 MF: 0.665 RF: 0.679
+Term: GO:0007010
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(106/116): GO:0007010 MF: 0.606 RF: 0.651
+Term: GO:0051276
+Term: GO:0048856
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(108/116): GO:0048856 MF: 0.629 RF: 0.639
+Term: GO:0005764
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(109/116): GO:0005764 MF: 0.749 RF: 0.728
+Term: GO:0006399
+Term: GO:0022857
+Term: GO:0005576
+Term: GO:0006790
+Term: GO:0006259
+Term: GO:0005768
+	Fold: 1
+	Fold: 2
+	Fold: 3
+	Fold: 4
+	Fold: 5
+	Fold: 6
+	Fold: 7
+	Fold: 8
+	Fold: 9
+	Fold: 10
+(115/116): GO:0005768 MF: 0.589 RF: 0.600
+Term: GO:0006412

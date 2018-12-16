@@ -1,0 +1,16 @@
+
+==========================================================================
+Fusion of three data sources for gene function prediction in Dictyostelium
+==========================================================================
+
+Fuse three data sets: gene expression data (Miranda et al., 2013, PLoS One),
+slim gene annotations from Gene Ontology and protein-protein interaction
+network from STRING database.
+
+Learnt latent matrix factors are utilized for the prediction of slim GO
+terms in Dictyostelium genes that are unavailable in the training phase.
+
+This example demonstrates how latent matrices estimated by data fusion
+can be utilized for association prediction.
+
+MSE: 0.0391
