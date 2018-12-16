@@ -1,4 +1,4 @@
-from relationGraph import Relation, RelationGraph
+from relationGraph import Relation, RelationGraph, MatrixOfRelationGraph
 from datasets.base import load_source
 from os.path import join
 import numpy as np
@@ -25,7 +25,16 @@ def test_build_relation_graph():
     relationGraph.add_relations([ann, expr, ppi])
     relationGraph.display_objects()
 
+    return relationGraph
+
+
+def test_convert_graph_to_2D_matrix(graph):
+    mrg = MatrixOfRelationGraph(graph=graph)
+    mrg.convert_to_2D_matrix()
+    mrg.display_metadata_2D_matrix()
+
 
 if __name__ == '__main__':
-    test_build_relation_graph()
+    graph = test_build_relation_graph()
+    test_convert_graph_to_2D_matrix(graph)
 

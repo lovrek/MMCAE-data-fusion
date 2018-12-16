@@ -3,6 +3,217 @@ import copy
 import utilityFunctions as uf
 
 
+class MatrixOfRelationGraph:
+
+    def __init__(self, graph=None):
+        self.graph = graph
+        self.matrix_2D = np.zeros((0, 0))
+        self.metadata_object_index = {}
+        self.metadata_object_matrix = np.zeros((0, 0))
+        self.matrix_3D = np.zeros((1, 0, 0))
+        self.x_index = {}
+        self.y_index = {}
+
+    def convert_to_2D_matrix(self):
+        self.metadata_object_matrix = np.zeros((len(self.graph.objects), len(self.graph.objects)))
+        self.metadata_object_index = dict(zip([*self.graph.objects], range(len(self.graph.objects))))
+
+        already_used = set()
+
+        for obj in self.graph.objects.values():
+            for relation in obj.get_all_relations():
+                if relation.name in already_used:
+                    continue
+
+                already_used.add(relation.name)
+
+                x = self.metadata_object_index[relation.x_object]
+                y = self.metadata_object_index[relation.y_object]
+
+                self.metadata_object_matrix[x][y] = 1
+
+                self.build_2D_matrix(relation)
+
+    def build_2D_matrix(self, relation):
+        print(relation.name + ' ' + str(relation.matrix.shape))
+        x_size, y_size = self.matrix_2D.shape
+
+        if self.matrix_2D.shape == (0, 0):
+            self.x_index = relation.x
+            self.y_index = relation.y
+            self.matrix_2D = relation.matrix
+            return
+
+        new_x = uf.find_new_values(uf.convert_dict_to_list(relation.x), uf.convert_dict_to_list(self.x_index))
+        new_y = uf.find_new_values(uf.convert_dict_to_list(relation.y), uf.convert_dict_to_list(self.y_index))
+
+        if len(new_x) == 0 and len(new_y) == 0:
+            # TODO: inset data to matrix, find start and stop index
+            relation = self.sort_rows(relation)
+            relation = self.sort_columns(relation)
+
+            list_x = uf.convert_dict_to_list(relation.x)
+            list_y = uf.convert_dict_to_list(relation.y)
+
+            first_x = relation.first_x()
+            first_y = relation.first_y()
+            last_x = relation.last_x()
+            last_y = relation.last_y()
+
+            if self.x_index[last_x] - self.x_index[first_x] + 1 != len(relation.x):
+                raise ValueError('Dimenzija X se ne ujema: ' + str(
+                    self.x_index[last_x] - self.x_index[first_x] + 1) + ' vs ' + str(len(relation.x)))
+
+            if self.y_index[last_y] - self.y_index[first_y] + 1 != len(relation.y):
+                raise ValueError('Dimenzija Y se ne ujema: ' + str(
+                    self.y_index[last_y] - self.y_index[first_y] + 1) + ' vs ' + str(len(relation.y)))
+
+            if first_x != list_x[self.x_index[first_x]] or last_x != list_x[self.x_index[last_x]] or \
+                    first_y != list_y[self.y_index[first_y]] or last_y != list_y[self.y_index[last_y]]:
+                raise ValueError('Indexi se ne ujemajo!')
+
+            self.matrix_2D += relation.matrix
+
+        elif len(new_x) == 0:
+            # TODO: resize matrix to y direction (add columns)
+            relation = self.sort_rows(relation)
+            y_list = relation.get_y_list()
+
+            new_y = dict(zip(y_list, range(y_size, y_size + len(y_list))))
+
+            self.y_index = uf.merge_two_dicts(self.y_index, new_y)
+            self.matrix_2D = np.c_[self.matrix_2D, relation.matrix]
+
+        elif len(new_y) == 0:
+            # TODO: resize matrix to x direction (add rows)
+            relation = self.sort_columns(relation)
+            x_list = relation.get_x_list()
+
+            new_x = dict(zip(x_list, range(x_size, x_size + len(x_list))))
+
+            self.x_index = uf.merge_two_dicts(self.x_index, new_x)
+            self.matrix_2D = np.r_[self.matrix_2D, relation.matrix]
+
+        else:
+            # TODO: resize to both direction (add columns and rows)
+            x_list = relation.get_x_list()
+            y_list = relation.get_y_list()
+
+            new_x = dict(zip(x_list), range(x_size, x_size + len(x_list)))
+            new_y = dict(zip(y_list), range(y_size, y_size + len(y_list)))
+
+            self.x_index = uf.merge_two_dicts(self.x_index, new_x)
+            self.y_index = uf.merge_two_dicts(self.y_index, new_y)
+
+            matrix_1 = np.c_[self.matrix_2D, np.zeros((x_size, len(new_y)))]
+            matrix_2 = np.c_[np.zeros((len(new_x), y_size)), relation.matrix]
+
+            self.matrix_2D = np.r_[matrix_1, matrix_2]
+
+    def sort_rows(self, relation):
+        tmp_relation = copy.copy(relation)
+
+        subtracted = len(self.x_index) - len(tmp_relation.x)
+        shift = 0
+        if subtracted > 0:
+            list_x = uf.convert_dict_to_list(self.x_index)[: subtracted + 1]
+
+            for i in range(len(list_x)):
+                if list_x[i] in tmp_relation.x.keys():
+                    shift = i
+                    break
+
+        already_swap = set()
+        reversed_dict = dict((v, k) for k, v in tmp_relation.x.items())
+
+        for key, value in tmp_relation.x.items():
+            if value != self.x_index[key] and self.x_index[key] not in already_swap:
+                # zamenjaj vrednosti v matriki
+                tmp_relation.matrix = uf.swap_row(tmp_relation.matrix, value, self.x_index[key] - shift)
+
+                # zamenjaj vrednosti v metedata
+                old_key = reversed_dict[self.x_index[key] - shift]
+                old_value = value
+                new_key = reversed_dict[value]
+                new_value = self.x_index[key] - shift
+
+                tmp_relation.x[new_key] = new_value
+                tmp_relation.x[old_key] = old_value
+
+                reversed_dict[new_value] = new_key
+                reversed_dict[old_value] = old_key
+
+                already_swap.add(self.x_index[key])
+
+        # resize output matrix and shift in right
+        if subtracted > 0:
+            if shift > 0:
+                new_matrix = np.r_[np.zeros((shift, tmp_relation.matrix.shape[1])), tmp_relation.matrix]
+                new_matrix = np.r_[new_matrix, np.zeros((subtracted - shift, tmp_relation.matrix.shape[1]))]
+            else:
+                new_matrix = np.r_[tmp_relation.matrix, np.zeros((subtracted, tmp_relation.matrix.shape[1]))]
+
+            tmp_relation.matrix = new_matrix
+            tmp_relation.x = dict((key, value + shift) for key, value in tmp_relation.x.items())
+
+        return tmp_relation
+
+    def sort_columns(self, relation):
+        tmp_relation = copy.copy(relation)
+
+        subtracted = len(self.y_index) - tmp_relation.matrix.shape[1]
+        shift = 0
+        if subtracted > 0:
+            list_y = uf.convert_dict_to_list(self.y_index)[: subtracted + 1]
+
+            for i in range(len(list_y)):
+                if list_y[i] in tmp_relation.y.keys():
+                    shift = i
+                    break
+
+        already_swap = set()
+        reversed_dict = dict((v, k) for k, v in tmp_relation.y.items())
+
+        for key, value in tmp_relation.y.items():
+            if value != self.y_index[key] and self.y_index[key] not in already_swap:
+                # zamenjaj vrednosti v matriki
+                tmp_relation.matrix = uf.swap_column(tmp_relation.matrix, value, self.y_index[key] - shift)
+                # zamenjaj vrednosti v metedata
+                old_key = reversed_dict[self.y_index[key] - shift]
+                old_value = value
+                new_key = reversed_dict[value]
+                new_value = self.y_index[key] - shift
+
+                tmp_relation.y[new_key] = new_value
+                tmp_relation.y[old_key] = old_value
+
+                reversed_dict[new_value] = new_key
+                reversed_dict[old_value] = old_key
+
+                already_swap.add(self.y_index[key])
+
+        # resize output matrix and shift in right
+        if subtracted > 0:
+            if shift > 0:
+                new_matrix = np.c_[np.zeros((tmp_relation.matrix.shape[0], shift)), tmp_relation.matrix]
+                new_matrix = np.c_[new_matrix, np.zeros((tmp_relation.matrix.shape[0], subtracted - shift))]
+            else:
+                new_matrix = np.c_[tmp_relation.matrix, np.zeros((tmp_relation.matrix.shape[0], subtracted))]
+
+            tmp_relation.matrix = new_matrix
+            tmp_relation.y = dict((key, value + shift) for key, value in tmp_relation.y.items())
+
+        return tmp_relation
+
+    def display_metadata_2D_matrix(self):
+        print('-------------2D Matrix-------------')
+        print('Objects: ' + ', '.join([ key + ': ' + str(value) for key, value in self.metadata_object_index.items()]))
+
+        for row in self.metadata_object_matrix:
+            print(row)
+
+
+
 class RelationGraph:
 
     def __init__(self):
@@ -213,6 +424,14 @@ class Object:
         for relation in self.relation_y:
             if relation.name.lower() == name.lower():
                 return relation
+
+    def get_all_relations(self):
+        if len(self.relation_x) > 0 and len(self.relation_y) > 0:
+            return np.concatenate(self.relation_x + self.relation_y)
+        elif len(self.relation_x) > 0:
+            return self.relation_x
+        else:
+            return self.relation_y
 
 
 class Relation:
