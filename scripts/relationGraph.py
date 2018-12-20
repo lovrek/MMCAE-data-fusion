@@ -10,13 +10,20 @@ class MatrixOfRelationGraph:
         self.matrix_2D = np.zeros((0, 0))
         self.metadata_object_index = {}
         self.metadata_object_matrix = np.zeros((0, 0))
+        self.metadata = []
         self.matrix_3D = np.zeros((1, 0, 0))
         self.x_index = {}
         self.y_index = {}
 
     def convert_to_2D_matrix(self):
         self.metadata_object_matrix = np.zeros((len(self.graph.objects), len(self.graph.objects)))
-        self.metadata_object_index = dict(zip([*self.graph.objects], range(len(self.graph.objects))))
+        self.metadata = [x[:] for x in [[None] * len(self.graph.objects)] * len(self.graph.objects)]
+
+        elements = 0
+        for index, obj in enumerate(self.graph.objects.values()):
+            self.metadata_object_index[obj.name] = (index, (elements, elements + len(obj.elements)-1))
+            elements += len(obj.elements)
+            index += 1
 
         already_used = set()
 
@@ -27,10 +34,13 @@ class MatrixOfRelationGraph:
 
                 already_used.add(relation.name)
 
-                x = self.metadata_object_index[relation.x_object]
-                y = self.metadata_object_index[relation.y_object]
+                x, x_coordinate = self.metadata_object_index[relation.x_object]
+                y, y_coordinate = self.metadata_object_index[relation.y_object]
 
                 self.metadata_object_matrix[x][y] = 1
+                self.metadata[x][y] = Metadata(relation.name,
+                                               start=(x_coordinate[0], y_coordinate[0]),
+                                               end=(x_coordinate[1], y_coordinate[1]))
 
                 self.build_2D_matrix(relation)
 
@@ -48,7 +58,7 @@ class MatrixOfRelationGraph:
         new_y = uf.find_new_values(uf.convert_dict_to_list(relation.y), uf.convert_dict_to_list(self.y_index))
 
         if len(new_x) == 0 and len(new_y) == 0:
-            # TODO: inset data to matrix, find start and stop index
+            # inset data to matrix, find start and stop index
             relation = self.sort_rows(relation)
             relation = self.sort_columns(relation)
 
@@ -75,7 +85,7 @@ class MatrixOfRelationGraph:
             self.matrix_2D += relation.matrix
 
         elif len(new_x) == 0:
-            # TODO: resize matrix to y direction (add columns)
+            # resize matrix to y direction (add columns)
             relation = self.sort_rows(relation)
             y_list = relation.get_y_list()
 
@@ -85,7 +95,7 @@ class MatrixOfRelationGraph:
             self.matrix_2D = np.c_[self.matrix_2D, relation.matrix]
 
         elif len(new_y) == 0:
-            # TODO: resize matrix to x direction (add rows)
+            # resize matrix to x direction (add rows)
             relation = self.sort_columns(relation)
             x_list = relation.get_x_list()
 
@@ -95,7 +105,7 @@ class MatrixOfRelationGraph:
             self.matrix_2D = np.r_[self.matrix_2D, relation.matrix]
 
         else:
-            # TODO: resize to both direction (add columns and rows)
+            # resize to both direction (add columns and rows)
             x_list = relation.get_x_list()
             y_list = relation.get_y_list()
 
@@ -207,11 +217,56 @@ class MatrixOfRelationGraph:
 
     def display_metadata_2D_matrix(self):
         print('-------------2D Matrix-------------')
-        print('Objects: ' + ', '.join([ key + ': ' + str(value) for key, value in self.metadata_object_index.items()]))
+        print('Objects: ' + ', '.join([key + ': ' + str(value) for key, value in self.metadata_object_index.items()]))
 
         for row in self.metadata_object_matrix:
             print(row)
+        print()
 
+    def display_density_data(self):
+        density = 0.3
+        rows_densisty = np.count_nonzero(self.matrix_2D, axis=0)
+
+        objects = {}
+        for key, value in self.metadata_object_index.items():
+            objects[key] = dict(zip(range(value[1][0], value[1][1]), rows_densisty[value[1][0]:value[1][1]]))   # kljuc je pozicija gena v 2D matriki, vrednost je stevilo ne praznih vrstic
+
+        for key, value in objects.items():
+            # objects[key] = uf.n_high_values(objects[key], round(len(objects[key]) * 0.1))
+            print(len(objects[key]))
+            print(round(len(objects[key]) * density))
+            tmp = uf.n_high_values(objects[key], round(len(objects[key]) * density))
+            l = np.asarray([x for x in tmp.values()])
+            mask = np.where(l >= len(objects[key]))
+            print('---------Object ' + key + '-------')
+            print(tmp)
+            print('Number of elements: ' + str(len(tmp)))
+            print('Avg value: ' + str(np.mean(l)))
+            print('Full rows: ' + str(len(l[mask[0]])))
+            print()
+
+
+
+class Metadata:
+
+    def __init__(self, name, start, end):
+        self.object = name
+        self.start = start
+        self.end = end
+
+    def contains_index(self, index):
+        if index[0] >= self.start[0] and index[0] <= self.end[0] \
+                and index[1] >= self.start[1] and index[1] <= self.end[1]:
+            return True
+
+        return False
+
+    def show(self):
+        print('-------------Metadata-------------')
+        print('Object: ' + self.object)
+        print('First element: ' + str(self.start))
+        print('Last element: ' + str(self.end))
+        print()
 
 
 class RelationGraph:
@@ -227,6 +282,7 @@ class RelationGraph:
                 [x.name + '-' + str(x.matrix.shape) for x in obj.relation_x]))
             print(str(len(obj.relation_y)) + '\t' + ', '.join(
                 [y.name + '-' + str(y.matrix.shape) for y in obj.relation_y]))
+        print()
 
     def add_relation(self, relation):
         tmp_relation = copy.copy(relation)
@@ -427,7 +483,7 @@ class Object:
 
     def get_all_relations(self):
         if len(self.relation_x) > 0 and len(self.relation_y) > 0:
-            return np.concatenate(self.relation_x + self.relation_y)
+            return self.relation_x + self.relation_y
         elif len(self.relation_x) > 0:
             return self.relation_x
         else:
@@ -465,13 +521,15 @@ class Relation:
         self.name = new_name
 
     def transpose(self):
-        t_entity = Relation(self.name, None, self.y_object, self.x_object)
-        t_entity.y = self.x
-        t_entity.x = self.y
-        t_entity.matrix = self.matrix.T
+        t_relation = Relation(self.name + '_T', None, self.y_object, self.x_object)
+        t_relation.y = self.x
+        t_relation.x = self.y
+        t_relation.x_object = self.y_object
+        t_relation.y_object = self.x_object
+        t_relation.matrix = self.matrix.T
         # relation doesn't used
 
-        return t_entity
+        return t_relation
 
     def first_x(self):
         return min(self.x, key=self.x.get)

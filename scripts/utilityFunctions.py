@@ -234,3 +234,12 @@ def assessment_results(old_matrix, new_matrix, eps=0.1):
     print('Number of successed: ' + str(np.count_nonzero(tmp_res)))
     print('Number of faild: ' + str((x * y) - np.count_nonzero(tmp_res)))
     print('All elements: ' + str(x * y))
+
+
+def n_high_values(d, num=10):
+    if len(d)-1 < num:
+        return d
+
+    l = sorted(d.items(), key=lambda x: x[1])
+    l.reverse()
+    return dict(l[:num])

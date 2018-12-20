@@ -2,8 +2,8 @@
 
 ## Datasets
   ### Dictyostelium:
-  - Gene - GO term [1219, 161]
-  - Gene - Exeriment conditions [1219, 282]
+  - Gene - GO term [1219, 116]
+  - Gene - Experiment conditions [1219, 282]
   - Gene - Gene [1219, 1219]
   
   ![alt text](datasets/data/dicty/Dicty_Schem.PNG)
