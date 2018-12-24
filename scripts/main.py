@@ -66,6 +66,14 @@ def test_convert_graph_to_2D_matrix(graph):
     print('2D matrix: ' + str(mrg.matrix_2D.shape))
 
 
+def test_get_matix_for_autoencoder(graph):
+    mrg = MatrixOfRelationGraph(graph=graph)
+    mrg.convert_to_2D_matrix()
+    data = mrg.density_data()
+    print(data.shape)
+    print(np.count_nonzero(data, axis=1))
+
+
 if __name__ == '__main__':
     if False:
         graph = test_build_relation_graph()
@@ -73,5 +81,6 @@ if __name__ == '__main__':
 
     if True:
         graph = test_build_relation_graph_with_symertic_data()
-        test_convert_graph_to_2D_matrix(graph)
+        # test_convert_graph_to_2D_matrix(graph)
+        test_get_matix_for_autoencoder(graph)
 

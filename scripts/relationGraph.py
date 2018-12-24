@@ -59,6 +59,7 @@ class MatrixOfRelationGraph:
 
         if len(new_x) == 0 and len(new_y) == 0:
             # inset data to matrix, find start and stop index
+            # TODO en bug je, testiraj z simetricnimi matrikami
             relation = self.sort_rows(relation)
             relation = self.sort_columns(relation)
 
@@ -109,8 +110,8 @@ class MatrixOfRelationGraph:
             x_list = relation.get_x_list()
             y_list = relation.get_y_list()
 
-            new_x = dict(zip(x_list), range(x_size, x_size + len(x_list)))
-            new_y = dict(zip(y_list), range(y_size, y_size + len(y_list)))
+            new_x = dict(zip(x_list, range(x_size, x_size + len(x_list))))
+            new_y = dict(zip(y_list, range(y_size, y_size + len(y_list))))
 
             self.x_index = uf.merge_two_dicts(self.x_index, new_x)
             self.y_index = uf.merge_two_dicts(self.y_index, new_y)
@@ -223,13 +224,33 @@ class MatrixOfRelationGraph:
             print(row)
         print()
 
+    def density_data(self, density=0.1):
+        rows_density = np.count_nonzero(self.matrix_2D, axis=0)
+
+        idx = np.array([])
+        for key, value in self.metadata_object_index.items():
+            elements = dict(zip(range(value[1][0], value[1][1]), rows_density[value[1][0]:value[1][1]]))  # kljuc je pozicija gena v 2D matriki, vrednost je stevilo ne praznih vrstic
+            top_highest = round(len(elements) * density)
+
+            filtered_idx = uf.convert_dict_to_list(uf.n_high_values(elements, top_highest))
+            idx = np.append(idx, filtered_idx)
+
+            print(key + ': ' + str(len(filtered_idx)))
+
+        mask = np.in1d(range(len(self.x_index)), idx, invert=True)
+        delete_idx = np.array(range(len(self.x_index)))[mask]
+        matrix = np.delete(self.matrix_2D, delete_idx, axis=1)
+        matrix = np.delete(matrix, delete_idx, axis=0)
+
+        return matrix
+
     def display_density_data(self):
         density = 0.3
-        rows_densisty = np.count_nonzero(self.matrix_2D, axis=0)
+        rows_density = np.count_nonzero(self.matrix_2D, axis=0)
 
         objects = {}
         for key, value in self.metadata_object_index.items():
-            objects[key] = dict(zip(range(value[1][0], value[1][1]), rows_densisty[value[1][0]:value[1][1]]))   # kljuc je pozicija gena v 2D matriki, vrednost je stevilo ne praznih vrstic
+            objects[key] = dict(zip(range(value[1][0], value[1][1]), rows_density[value[1][0]:value[1][1]]))   # kljuc je pozicija gena v 2D matriki, vrednost je stevilo ne praznih vrstic
 
         for key, value in objects.items():
             # objects[key] = uf.n_high_values(objects[key], round(len(objects[key]) * 0.1))
