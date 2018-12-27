@@ -90,6 +90,7 @@ def get_non_zeros_indices(matrix):
 
 
 def sample_generator(matrix, dismiss_elements=[], num_of_samples=1):
+    # too slower method
     non_zeros = np.count_nonzero(matrix)
     sample_density = 0.8             # 0.8 -> 80%
     x, y = matrix.shape
@@ -119,6 +120,24 @@ def sample_generator(matrix, dismiss_elements=[], num_of_samples=1):
     print('Total samples: ' + str(samples.shape[0]))
 
     return samples
+
+
+def sample_generator2(matrix, num_of_samples=1, density=0.8):
+    x_size, y_size = matrix.shape
+    data = np.empty((0, y_size))
+
+    for row in matrix:
+        counter = 0
+        while counter < num_of_samples:
+            tmp_row = np.copy(row)
+            indices = np.random.choice(y_size, round(y_size * density), replace=False)
+            mask = np.isin(np.arange(y_size), indices, invert=True)
+            tmp_row[mask] = 0
+            data = np.r_[data, tmp_row.reshape(1, y_size)]
+
+            counter += 1
+
+    return data
 
 
 def set_test_matrix(matrix, num_of_elements=10):
@@ -201,6 +220,7 @@ def check_object_type(object, type_name):
 
 
 def random_generate_sample(matrix, x_size, y_size):
+    # randomly remove some columns and rows
     x, y = matrix.shape
     sample = matrix
 

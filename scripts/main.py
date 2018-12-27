@@ -1,8 +1,9 @@
 from relationGraph import Relation, RelationGraph, MatrixOfRelationGraph
-from autoencoder import seedy, load_encoder, load_decoder, AutoEncoder
+#from autoencoder import seedy, load_encoder, load_decoder, AutoEncoder
 from datasets.base import load_source
 from sklearn.metrics import mean_squared_error
 from os.path import join
+import utilityFunctions as uf
 import numpy as np
 
 
@@ -77,22 +78,32 @@ def test_get_matix_for_autoencoder(graph):
     return data
 
 
-def test_autoencoder(data):
-    seedy(42)
-    ae = AutoEncoder(encoding_dim=2, data=data.flatten())
-    ae.encoder_decoder()
-    ae.fit(batch_size=50, epochs=300)
-    ae.save()
+# def test_autoencoder(data):
+#     seedy(42)
+#     ae = AutoEncoder(encoding_dim=2, data=data.flatten())
+#     ae.encoder_decoder()
+#     ae.fit(batch_size=50, epochs=300)
+#     ae.save()
+#
+#     encoder = load_encoder()
+#     decoder = load_decoder()
+#
+#     inputs = [data]
+#     x = encoder.predict(inputs)
+#     y = decoder.predict(x)
+#
+#     mse = mean_squared_error(inputs, y)
+#     print('MSE: ' + str(mse))
 
-    encoder = load_encoder()
-    decoder = load_decoder()
 
-    inputs = [data]
-    x = encoder.predict(inputs)
-    y = decoder.predict(x)
+def test_generation_samples_by_rows(data=None):
+    data = uf.random_generate_sample(np.ones((10, 10)), 5, 8)
+    assert data.shape == (5, 8)
 
-    mse = mean_squared_error(inputs, y)
-    print('MSE: ' + str(mse))
+
+def test_generate_samples_by_cells(data=None):
+    data = uf.sample_generator2(np.ones((10, 10)))
+    print(data)
 
 
 if __name__ == '__main__':
@@ -104,8 +115,11 @@ if __name__ == '__main__':
         graph = test_build_relation_graph_with_symertic_data()
         test_convert_graph_to_2D_matrix(graph)
 
-    if True:
+    if False:
         graph = test_build_relation_graph_with_symertic_data()
         data = test_get_matix_for_autoencoder(graph)
         test_autoencoder(data)
+    if False:
+        test_generation_samples_by_rows()
+        test_generate_samples_by_cells()
 
