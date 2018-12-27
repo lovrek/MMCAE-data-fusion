@@ -70,8 +70,8 @@ class AutoEncoder:
                       )
 
     def save(self):
-        if not os.path.exists(r'/mag/weigths'):
-            os.mkdir(r'/mag/weigths')
+        if not os.path.exists(r'/mag/weights'):
+            os.mkdir(r'/mag/weights')
 
         self.encoder.save(r'/mag/weights/encoder_weights.h5')
         self.decoder.save(r'/mag/weights/decoder_weights.h5')

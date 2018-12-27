@@ -73,13 +73,13 @@ def test_get_matix_for_autoencoder(graph):
     mrg.convert_to_2D_matrix()
     data = mrg.density_data()
     print(data.shape)
-    print(data.flaten)
+    print(data.flatten())
     return data
 
 
 def test_autoencoder(data):
     seedy(42)
-    ae = AutoEncoder(encoding_dim=2, data=data)
+    ae = AutoEncoder(encoding_dim=2, data=data.flatten())
     ae.encoder_decoder()
     ae.fit(batch_size=50, epochs=300)
     ae.save()
@@ -93,7 +93,6 @@ def test_autoencoder(data):
 
     mse = mean_squared_error(inputs, y)
     print('MSE: ' + str(mse))
-
 
 
 if __name__ == '__main__':
