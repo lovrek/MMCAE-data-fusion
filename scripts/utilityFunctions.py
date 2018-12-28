@@ -90,7 +90,8 @@ def get_non_zeros_indices(matrix):
 
 
 def sample_generator(matrix, dismiss_elements=[], num_of_samples=1):
-    # too slower method
+    # too slower method O(n^2)
+    # zastarelo, za enkrat se ne uporablja
     non_zeros = np.count_nonzero(matrix)
     sample_density = 0.8             # 0.8 -> 80%
     x, y = matrix.shape
@@ -123,6 +124,7 @@ def sample_generator(matrix, dismiss_elements=[], num_of_samples=1):
 
 
 def sample_generator2(matrix, num_of_samples=1, density=0.8):
+    # generator, kadar vhod predstavlja posamezna vrsica v matriki
     x_size, y_size = matrix.shape
     data = np.empty((0, y_size))
 
@@ -136,6 +138,29 @@ def sample_generator2(matrix, num_of_samples=1, density=0.8):
             data = np.r_[data, tmp_row.reshape(1, y_size)]
 
             counter += 1
+
+    return data
+
+
+def sample_generator3(matrix, num_of_samples=1, density=0.8):
+    # generator, kadar vhod predstavlja celotna matrika
+    x_size, y_size = matrix.shape
+    data = np.empty((0, x_size * y_size))
+    counter = 1
+    
+    while num_of_samples > 0:
+        tmp_matrix = np.copy(matrix)
+        for row in tmp_matrix:
+            indices = np.random.choice(y_size, round(y_size * density), replace=False)
+            mask = np.isin(np.arange(y_size), indices, invert=True)
+            row[mask] = 0
+            
+        data = np.r_[data, tmp_matrix.reshape(1, x_size * y_size)]                
+        
+        if counter % 100 == 0:
+            print(counter)
+        num_of_samples -= 1
+        counter += 1
 
     return data
 
