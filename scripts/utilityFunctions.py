@@ -124,10 +124,11 @@ def sample_generator(matrix, dismiss_elements=[], num_of_samples=1):
 
 
 def sample_generator2(matrix, num_of_samples=1, density=0.8):
-    # generator, kadar vhod predstavlja posamezna vrsica v matriki
+    # vhod v NN je vrsica v matriki - opustiom, porebno bi bilo urejanje po sosednostih
     x_size, y_size = matrix.shape
     data = np.empty((0, y_size))
 
+    i = 1
     for row in matrix:
         counter = 0
         while counter < num_of_samples:
@@ -136,14 +137,17 @@ def sample_generator2(matrix, num_of_samples=1, density=0.8):
             mask = np.isin(np.arange(y_size), indices, invert=True)
             tmp_row[mask] = 0
             data = np.r_[data, tmp_row.reshape(1, y_size)]
-
+        
+            if i % 100 == 0:
+                print(i)
+            i += 1
             counter += 1
 
     return data
 
 
 def sample_generator3(matrix, num_of_samples=1, density=0.8):
-    # generator, kadar vhod predstavlja celotna matrika
+    # vhod v NN je celotna matrika
     x_size, y_size = matrix.shape
     data = np.empty((0, x_size * y_size))
     counter = 1

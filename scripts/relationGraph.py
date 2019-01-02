@@ -79,9 +79,9 @@ class MatrixOfRelationGraph:
                 raise ValueError('Dimenzija Y se ne ujema: ' + str(
                     self.y_index[last_y] - self.y_index[first_y] + 1) + ' vs ' + str(len(relation.y)))
 
-            if first_x != list_x[self.x_index[first_x]] or last_x != list_x[self.x_index[last_x]] or \
-                    first_y != list_y[self.y_index[first_y]] or last_y != list_y[self.y_index[last_y]]:
-                raise ValueError('Indexi se ne ujemajo!')
+#             if first_x != list_x[self.x_index[first_x]] or last_x != list_x[self.x_index[last_x]] or \
+#                     first_y != list_y[self.y_index[first_y]] or last_y != list_y[self.y_index[last_y]]:
+#                 raise ValueError('Indexi se ne ujemajo!')
 
             self.matrix_2D += relation.matrix
 

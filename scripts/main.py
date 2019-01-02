@@ -1,6 +1,6 @@
 from relationGraph import Relation, RelationGraph, MatrixOfRelationGraph
-#from autoencoder import seedy, load_encoder, load_decoder, AutoEncoder
-from datasets.base import load_source
+from autoencoder import seedy, load_encoder, load_decoder, AutoEncoder
+from base import load_source
 from sklearn.metrics import mean_squared_error
 from os.path import join
 import utilityFunctions as uf
@@ -78,22 +78,22 @@ def test_get_matix_for_autoencoder(graph):
     return data
 
 
-# def test_autoencoder(data):
-#     seedy(42)
-#     ae = AutoEncoder(encoding_dim=2, data=data.flatten())
-#     ae.encoder_decoder()
-#     ae.fit(batch_size=50, epochs=300)
-#     ae.save()
-#
-#     encoder = load_encoder()
-#     decoder = load_decoder()
-#
-#     inputs = [data]
-#     x = encoder.predict(inputs)
-#     y = decoder.predict(x)
-#
-#     mse = mean_squared_error(inputs, y)
-#     print('MSE: ' + str(mse))
+def test_autoencoder(data):
+    seedy(42)
+    ae = AutoEncoder(encoding_dim=2, data=data.flatten())
+    ae.encoder_decoder()
+    ae.fit(batch_size=50, epochs=300)
+    ae.save()
+
+    encoder = load_encoder()
+    decoder = load_decoder()
+
+    inputs = [data.reshape(26244, 1)]
+    x = encoder.predict(inputs)
+    y = decoder.predict(x)
+
+    mse = mean_squared_error(inputs, y)
+    print('MSE: ' + str(mse))
 
 
 def test_generation_samples_by_rows(data=None):

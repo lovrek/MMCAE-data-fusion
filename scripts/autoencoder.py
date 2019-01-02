@@ -5,7 +5,12 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras.callbacks import TensorBoard, EarlyStopping
 from tensorflow import set_random_seed
 import numpy as np
+import utilityFunctions as uf
 import os
+
+import multiprocessing
+import time
+from pathlib import Path
 
 
 def seedy(s):
@@ -21,15 +26,49 @@ def load_decoder():
     return load_model(r'/mag/weights/decoder_weights.h5')
 
 
+def mp_worker(arr):
+#     new_data = uf.sample_generator3(data, num_of_samples=100, density=0.7)
+    new_data = uf.sample_generator3(arr[0], num_of_samples=arr[1], density=arr[2])
+    return new_data
+
+
+def data_generator(data, n_samples, batch_size, density):
+#     p = multiprocessing.Pool(8)
+#     gen_samples = np.empty((0, data.shape[0] * data.shape[1]))
+#     iterations = int(np.round(n_samples/100)) if  n_samples > 100 else 1
+    
+#     params = [[data, 100, density] for x in range(5)]
+#     for result in p.imap(mp_worker, params):
+#         print(result.shape)
+#         gen_samples = np.r_[gen_samples, result]
+    
+#     return gen_samples
+    samples_per_epoch = n_samples
+    number_of_batches = samples_per_epoch/batch_size
+    counter=0
+    
+    while True:
+        x = uf.sample_generator3(data, num_of_samples=n_samples, density=0.7)
+        yield (x, x)
+        
+        if counter >= number_of_batches:
+            counter = 0
+
+
 class AutoEncoder:
 
     def __init__(self, encoding_dim=3, data=None):
         self.encoding_dim = encoding_dim
-#         r = lambda: np.random.randint(1, 3)
-#         self.x = np.array([[r(), r(), r()] for _ in range(1000)])
-        self.x = np.array([data for _ in range(100)])
+        if data is None:
+            # generate dummy data
+            r = lambda: np.random.randint(1, 3)
+            self.x = np.array([[r(), r(), r()] for _ in range(1000)])
+        else:
+            self.x = data
+            
         self.x_dim = self.x.shape[1]
         print(self.x)
+        print(self.x.shape)
         print(self.x_dim)
 
     def _encoder(self):
@@ -58,16 +97,28 @@ class AutoEncoder:
         self.model = model
         return model
 
-    def fit(self, batch_size=100, epochs=300):
+    def fit(self, batch_size=100, epochs=100):
         self.model.compile(optimizer='sgd', loss='mse')
         log_dir = '/mag/logs/'
-        callbacks = [TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=True, write_images=True)]
+        callbacks = [
+            TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=True, write_images=True)]
+#             EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')]
 
         self.model.fit(self.x, self.x,
                        epochs=epochs,
                        batch_size=batch_size,
                        callbacks=callbacks
                       )
+    
+    def fit_generator(self, n_samples=100, density=0.8, batch_size=20, epochs=100):
+        self.model.compile(optimizer='sgd', loss='mse')
+        log_dir = '/mag/logs/'
+        callbacks = [
+            TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=True, write_images=True)]
+#             EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')]
+
+        self.model.fit_generator(data_generator(self.x, n_samples, batch_size, density), steps_per_epoch=int((n_samples - 1)/batch_size) + 1, epochs=epochs)
+
 
     def save(self):
         if not os.path.exists(r'/mag/weights'):
