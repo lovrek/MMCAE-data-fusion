@@ -1,7 +1,8 @@
 import numpy as np
 import random as r
 import relationGraph as rg
-
+import tempfile
+import multiprocessing
 
 def swap_column(matrix, frm, to):
     # swap columns
@@ -150,7 +151,7 @@ def sample_generator3(matrix, num_of_samples=1, density=0.8):
     # vhod v NN je celotna matrika
     x_size, y_size = matrix.shape
     data = np.empty((0, x_size * y_size))
-    counter = 1
+    print('Random seed: '  + str(np.random.randint(y_size)))
     
     while num_of_samples > 0:
         tmp_matrix = np.copy(matrix)
@@ -160,11 +161,7 @@ def sample_generator3(matrix, num_of_samples=1, density=0.8):
             row[mask] = 0
             
         data = np.r_[data, tmp_matrix.reshape(1, x_size * y_size)]                
-        
-        if counter % 100 == 0:
-            print(counter)
         num_of_samples -= 1
-        counter += 1
 
     return data
 
@@ -292,3 +289,144 @@ def n_high_values(d, num=10):
     l = sorted(d.items(), key=lambda x: x[1])
     l.reverse()
     return dict(l[:num])
+
+class my_savez(object):
+    def __init__(self, file):
+        # Import is postponed to here since zipfile depends on gzip, an optional
+        # component of the so-called standard library.
+        import zipfile
+        # Import deferred for startup time improvement
+        import tempfile
+        import os
+
+        if isinstance(file, str):
+            if not file.endswith('.npz'):
+                file = file + '.npz'
+
+        compression = zipfile.ZIP_STORED
+
+        zip = self.zipfile_factory(file, mode="w", compression=compression)
+
+        # Stage arrays in a temporary file on disk, before writing to zip.
+        fd, tmpfile = tempfile.mkstemp(suffix='-numpy.npy')
+        os.close(fd)
+
+        self.tmpfile = tmpfile
+        self.zip = zip
+        self.i = 0
+
+    def zipfile_factory(self, *args, **kwargs):
+        import zipfile
+        import sys
+        if sys.version_info >= (2, 5):
+            kwargs['allowZip64'] = True
+        return zipfile.ZipFile(*args, **kwargs)
+
+    def savez(self, *args, **kwds):
+        import os
+        import numpy.lib.format as format
+
+        namedict = kwds
+        for val in args:
+            key = 'arr_%d' % self.i
+            if key in namedict.keys():
+                raise ValueError("Cannot use un-named variables and keyword %s" % key)
+            namedict[key] = val
+            self.i += 1
+
+        try:
+            for key, val in namedict.items():
+                fname = key + '.npy'
+                fid = open(self.tmpfile, 'wb')
+                try:
+                    format.write_array(fid, np.asanyarray(val))
+                    fid.close()
+                    fid = None
+                    self.zip.write(self.tmpfile, arcname=fname)
+                finally:
+                    if fid:
+                        fid.close()
+        finally:
+            os.remove(self.tmpfile)
+
+    def close(self):
+        self.zip.close()
+
+# tmp = '/mag/test.npz'
+# f = my_savez(tmp)
+# for i in range(10):
+#   array = np.zeros(10)
+#   f.savez(array)
+# f.close()
+
+# # tmp.seek(0)
+
+# tmp_read = np.load(tmp)
+# print (tmp_read.files)
+# for k, v in tmp_read.iteritems():
+#      print (k, v)
+
+#------------------------------------
+# Multiprocessing - generate samples
+def mp_worker(arr):
+#     new_data = uf.sample_generator3(data, num_of_samples=100, density=0.7, 1)
+    np.random.seed(arr[3])
+    new_data = sample_generator3(arr[0], num_of_samples=arr[1], density=arr[2])
+    return new_data
+
+
+def data_generator(data, n_samples, pools, density, filename):
+    batch_size = 100
+    p = multiprocessing.Pool(pools)
+    gen_samples = np.empty((0, data.shape[0] * data.shape[1]))
+    iterations = int(np.round((n_samples -1)/batch_size)) + 1
+    
+    params = [[data, batch_size, density, i] for i in range(iterations)]
+    
+    i = 1
+    f = my_savez(filename)
+    for result in p.imap(mp_worker, params):
+        print('samples: ' + str(i * batch_size))
+        i+=1
+        f.savez(result)
+    f.close()
+
+    
+def normalization(data, _min=0, _max=1):
+    if _min >= _max:
+        raise ValueError('Attribute \'min\' must be lower than \'min\'.')
+    if _min > 0 or _max < 0:
+        raise ValueError('This operation is not supported!')
+    
+    min_val = np.min(data)    
+    if min_val < 0:
+        data = data + np.abs(min_val)
+        data[np.where(data == np.abs(min_val))] = 0
+        
+    max_val = np.max(data)
+    if max_val > 1:
+        data = data / max_val
+    elif max_val < 1:
+        factor = 1/max_val
+        data = data * factor
+        
+    return data
+
+# list of matrices, only data
+def get_org_data(graph):
+    org_data = []
+    already = set()
+    for obj in graph.objects.values():        
+        for relation in obj.relation_x:
+            if relation.name not in already:
+                a,b = relation.matrix.shape
+                org_data.append(np.array(relation.matrix).reshape(1,a,b,1))
+                already.add(relation.name)
+
+        for relation in obj.relation_y:
+            if relation.name not in already:
+                a,b = relation.matrix.shape
+                org_data.append(np.array(relation.matrix).reshape(1,a,b,1))
+                already.add(relation.name)
+    
+    return org_data

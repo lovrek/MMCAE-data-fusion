@@ -6,6 +6,8 @@ import csv
 from collections import defaultdict
 from os.path import dirname
 from os.path import join
+import utilityFunctions as uf
+from relationGraph import Relation, RelationGraph, MatrixOfRelationGraph
 
 import numpy as np
 
@@ -35,8 +37,8 @@ def load_source(source_path, delimiter=',', filling_value='0'):
     """
     module_path = dirname(__file__)
     data_file = gzip.open(join(module_path, 'data', source_path))
-    row_names = np.array(next(data_file).decode('utf-8').strip().split(delimiter))
-    col_names = np.array(next(data_file).decode('utf-8').strip().split(delimiter))
+    row_names = np.array(next(data_file).decode('utf-8').strip().replace(', ', ' ').replace('.,', '.').split(delimiter))
+    col_names = np.array(next(data_file).decode('utf-8').strip().replace(', ', ' ').replace('.,', '.').split(delimiter))
     data = np.genfromtxt(data_file, delimiter=delimiter, missing_values=[''],
                          filling_values=filling_value)
     return data, row_names, col_names
@@ -171,4 +173,3 @@ def show_data_pharma():
     print('Subset(data1 - data4): ' + str(len(set(rn1) & set(rn4))))
     print('Subset(data1 - data6): ' + str(len(set(rn1) & set(rn6))))
     print('Subset(data3 - data5): ' + str(len(set(cn3) & set(rn5))))
-

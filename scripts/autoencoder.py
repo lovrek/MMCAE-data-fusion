@@ -16,42 +16,57 @@ from pathlib import Path
 def seedy(s):
     np.random.seed(s)
     set_random_seed(s)
-
-
-def load_encoder():
-    return load_model(r'/mag/weights/encoder_weights.h5')
-
-
-def load_decoder():
-    return load_model(r'/mag/weights/decoder_weights.h5')
-
-
-def mp_worker(arr):
-#     new_data = uf.sample_generator3(data, num_of_samples=100, density=0.7)
-    new_data = uf.sample_generator3(arr[0], num_of_samples=arr[1], density=arr[2])
-    return new_data
-
-
-def data_generator(data, n_samples, batch_size, density):
-#     p = multiprocessing.Pool(8)
-#     gen_samples = np.empty((0, data.shape[0] * data.shape[1]))
-#     iterations = int(np.round(n_samples/100)) if  n_samples > 100 else 1
     
-#     params = [[data, 100, density] for x in range(5)]
-#     for result in p.imap(mp_worker, params):
-#         print(result.shape)
-#         gen_samples = np.r_[gen_samples, result]
     
-#     return gen_samples
-    samples_per_epoch = n_samples
-    number_of_batches = samples_per_epoch/batch_size
-    counter=0
+def load_encoder(folder):
+    return load_model(r'/data/weights/' + str(folder) + '/encoder_weights.h5')
+
+
+def load_decoder(folder):
+    return load_model(r'/data/weights/' + str(folder) + '/decoder_weights.h5')
+
+            
+def data_generator(filename, n_pack):
+    # n_pack => 100 samples of matrix
+    # n_pack = batch_size
+    # filename = 'ann.npz'
     
+    f = np.load(filename)
+    files = f.files
+    
+    counter = 0
     while True:
-        x = uf.sample_generator3(data, num_of_samples=n_samples, density=0.7)
+        rand_num = np.random.randint(len(files))
+        x = f[files[rand_num]]
         yield (x, x)
         
-        if counter >= number_of_batches:
+        if counter >= n_pack:
+            counter = 0
+            
+def data_generator(filenames, n_pack):
+    # n_pack => 100 samples of matrix
+    # n_pack = batch_size
+    # filenames = ['ann.npz', 'exp.npz', 'ppi.npz']
+    
+    files = []              # different files
+    num_packs = []          # subpacked inside of file
+    for filename in filenames:
+        f = np.load(filename)
+        files.append(f)
+        num_packs.append(f.files)
+    
+    counter = 0
+    while True:
+        x = []
+        for i in range(len(files)):
+            rand_num = np.random.randint(len(num_packs[i]))
+            f = files[i]
+            pack = num_packs[i]
+            x.append(f[pack[rand_num]])
+            
+        yield (x, x)
+        
+        if counter >= n_pack:
             counter = 0
 
 
@@ -67,9 +82,11 @@ class AutoEncoder:
             self.x = data
             
         self.x_dim = self.x.shape[1]
+        self.path = r'/data/weights/' + str(np.int(np.sqrt(self.x_dim)))
         print(self.x)
         print(self.x.shape)
         print(self.x_dim)
+        print(self.path)
 
     def _encoder(self):
         inputs = Input(shape=(self.x[0].shape))
@@ -99,7 +116,7 @@ class AutoEncoder:
 
     def fit(self, batch_size=100, epochs=100):
         self.model.compile(optimizer='sgd', loss='mse')
-        log_dir = '/mag/logs/'
+        log_dir = '/data/logs/'
         callbacks = [
             TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=True, write_images=True)]
 #             EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')]
@@ -110,23 +127,29 @@ class AutoEncoder:
                        callbacks=callbacks
                       )
     
-    def fit_generator(self, n_samples=100, density=0.8, batch_size=20, epochs=100):
+    def fit_generator(self, filename, n_packs=2, epochs=100):
         self.model.compile(optimizer='sgd', loss='mse')
-        log_dir = '/mag/logs/'
+        log_dir = '/data/logs/'
         callbacks = [
-            TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=True, write_images=True)]
-#             EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')]
+            TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=True, write_images=True),
+            EarlyStopping(monitor='loss', min_delta=0, patience=3, verbose=0, mode='auto')
+        ]
 
-        self.model.fit_generator(data_generator(self.x, n_samples, batch_size, density), steps_per_epoch=int((n_samples - 1)/batch_size) + 1, epochs=epochs)
-
+        self.model.fit_generator(data_generator(filename, n_packs), steps_per_epoch=n_packs, epochs=epochs, callbacks=callbacks)
 
     def save(self):
-        if not os.path.exists(r'/mag/weights'):
-            os.mkdir(r'/mag/weights')
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
 
-        self.encoder.save(r'/mag/weights/encoder_weights.h5')
-        self.decoder.save(r'/mag/weights/decoder_weights.h5')
-        self.model.save(r'/mag/weights/ae_weights.h5')
+        self.encoder.save(self.path + '/encoder_weights.h5')
+        self.decoder.save(self.path + '/decoder_weights.h5')
+        self.model.save(self.path + '/ae_weights.h5')
+        
+    def load_encoder(self):
+        return load_model(self.path + '/encoder_weights.h5')
+
+    def load_decoder(self):
+        return load_model(self.path + '/decoder_weights.h5')
 
 
 # Example how to call Autoencoder class
@@ -150,3 +173,30 @@ class AutoEncoder:
     # print('Inputs: {}'.format(inputs))
     # print('Encoded: {}'.format(x))
     # print('Decoded: {}'.format(y))
+
+    
+# Example - how to run Autoencoder
+# x, y = data.shape
+# data=data.reshape(1, x * y)
+# ae = AutoEncoder(encoding_dim=20, data=data)
+# ae.encoder_decoder()
+# # ae.fit(batch_size=250, epochs=100)
+# # fn = '/mag/483_data.npz'
+# ae.fit_generator(fn, n_packs=10, epochs=200)
+# ae.save()
+
+# encoder = ae.load_encoder()
+# decoder = ae.load_decoder()
+
+# # test_data = np.asarray([data[0].flatten()])
+# test_data = np.asarray([data.flatten()])
+# # print(test_data)
+# # np.random.shuffle(test_data[0])
+# # print(test_data)
+# print(test_data.shape)
+
+# x = encoder.predict(test_data)
+# y = decoder.predict(x)
+
+# mse = mean_squared_error(test_data, y)
+# print('MSE: ' + str(mse))
