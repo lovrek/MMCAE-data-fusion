@@ -8,9 +8,10 @@ services:
       - "6006:6006"
       - "8888:8888"
     volumes:
-     - ./:/home/mag
+     - ./:/home/lpodgorsek/mag
     environment:
       JUPYTER_PASSWORD: "${JUPYTER_PASSWORD}"
       JUPYTER_PORT: 8888
       TENSORBOARD_LOGDIR: "./logs/"
       TENSORBOARD_PORT: 6006
+      NVIDIA_VISIBLE_DEVICES=2

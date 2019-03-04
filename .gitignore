@@ -1,0 +1,8 @@
+scripts/logs/
+scripts/.
+scripts/.*
+.swp
+.docker-compose.yml.swp
+scripts/__pycache__/
+scripts/.*/*
+scripts/.ipynb_checkpoints/
