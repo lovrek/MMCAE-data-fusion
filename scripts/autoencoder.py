@@ -29,6 +29,8 @@ def load_decoder(folder):
 def data_generator(filename, n_pack):
     # n_pack => 100 samples of matrix
     # n_pack = batch_size
+    # filename = 'ann.npz'
+    
     f = np.load(filename)
     files = f.files
     
@@ -36,6 +38,32 @@ def data_generator(filename, n_pack):
     while True:
         rand_num = np.random.randint(len(files))
         x = f[files[rand_num]]
+        yield (x, x)
+        
+        if counter >= n_pack:
+            counter = 0
+            
+def data_generator(filenames, n_pack):
+    # n_pack => 100 samples of matrix
+    # n_pack = batch_size
+    # filenames = ['ann.npz', 'exp.npz', 'ppi.npz']
+    
+    files = []              # different files
+    num_packs = []          # subpacked inside of file
+    for filename in filenames:
+        f = np.load(filename)
+        files.append(f)
+        num_packs.append(f.files)
+    
+    counter = 0
+    while True:
+        x = []
+        for i in range(len(files)):
+            rand_num = np.random.randint(len(num_packs[i]))
+            f = files[i]
+            pack = num_packs[i]
+            x.append(f[pack[rand_num]])
+            
         yield (x, x)
         
         if counter >= n_pack:
