@@ -371,7 +371,7 @@ class my_savez(object):
 def mp_worker(arr):
 #     new_data = uf.sample_generator3(data, num_of_samples=100, density=0.7, 1)
     np.random.seed(arr[3])
-    new_data = uf.sample_generator3(arr[0], num_of_samples=arr[1], density=arr[2])
+    new_data = sample_generator3(arr[0], num_of_samples=arr[1], density=arr[2])
     return new_data
 
 
@@ -390,6 +390,43 @@ def data_generator(data, n_samples, pools, density, filename):
         i+=1
         f.savez(result)
     f.close()
+
     
-    return gen_samples
-#-----------------------------------
+def normalization(data, _min=0, _max=1):
+    if _min >= _max:
+        raise ValueError('Attribute \'min\' must be lower than \'min\'.')
+    if _min > 0 or _max < 0:
+        raise ValueError('This operation is not supported!')
+    
+    min_val = np.min(data)    
+    if min_val < 0:
+        data = data + np.abs(min_val)
+        data[np.where(data == np.abs(min_val))] = 0
+        
+    max_val = np.max(data)
+    if max_val > 1:
+        data = data / max_val
+    elif max_val < 1:
+        factor = 1/max_val
+        data = data * factor
+        
+    return data
+
+# list of matrices, only data
+def get_org_data(graph):
+    org_data = []
+    already = set()
+    for obj in graph.objects.values():        
+        for relation in obj.relation_x:
+            if relation.name not in already:
+                a,b = relation.matrix.shape
+                org_data.append(np.array(relation.matrix).reshape(1,a,b,1))
+                already.add(relation.name)
+
+        for relation in obj.relation_y:
+            if relation.name not in already:
+                a,b = relation.matrix.shape
+                org_data.append(np.array(relation.matrix).reshape(1,a,b,1))
+                already.add(relation.name)
+    
+    return org_data

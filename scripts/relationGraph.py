@@ -43,9 +43,12 @@ class MatrixOfRelationGraph:
                                                end=(x_coordinate[1], y_coordinate[1]))
 
                 self.build_2D_matrix(relation)
+                
+                print(self.matrix_2D.shape)
+                print()
 
     def build_2D_matrix(self, relation):
-        print(relation.name + ' ' + str(relation.matrix.shape))
+        print('-----------' + relation.name + ' ' + str(relation.matrix.shape) + '-----------')
         x_size, y_size = self.matrix_2D.shape
 
         if self.matrix_2D.shape == (0, 0):
@@ -58,6 +61,7 @@ class MatrixOfRelationGraph:
         new_y = uf.find_new_values(uf.convert_dict_to_list(relation.y), uf.convert_dict_to_list(self.y_index))
 
         if len(new_x) == 0 and len(new_y) == 0:
+            print('x == y')
             # inset data to matrix, find start and stop index
             # TODO en bug je, testiraj z simetricnimi matrikami
             relation = self.sort_rows(relation)
@@ -86,6 +90,7 @@ class MatrixOfRelationGraph:
             self.matrix_2D += relation.matrix
 
         elif len(new_x) == 0:
+            print('x == 0')
             # resize matrix to y direction (add columns)
             relation = self.sort_rows(relation)
             y_list = relation.get_y_list()
@@ -96,6 +101,7 @@ class MatrixOfRelationGraph:
             self.matrix_2D = np.c_[self.matrix_2D, relation.matrix]
 
         elif len(new_y) == 0:
+            print('y == 0')
             # resize matrix to x direction (add rows)
             relation = self.sort_columns(relation)
             x_list = relation.get_x_list()
@@ -106,6 +112,7 @@ class MatrixOfRelationGraph:
             self.matrix_2D = np.r_[self.matrix_2D, relation.matrix]
 
         else:
+            print('x != y')
             # resize to both direction (add columns and rows)
             x_list = relation.get_x_list()
             y_list = relation.get_y_list()
@@ -133,7 +140,7 @@ class MatrixOfRelationGraph:
                 if list_x[i] in tmp_relation.x.keys():
                     shift = i
                     break
-
+                    
         already_swap = set()
         reversed_dict = dict((v, k) for k, v in tmp_relation.x.items())
 
@@ -184,7 +191,7 @@ class MatrixOfRelationGraph:
 
         already_swap = set()
         reversed_dict = dict((v, k) for k, v in tmp_relation.y.items())
-
+        
         for key, value in tmp_relation.y.items():
             if value != self.y_index[key] and self.y_index[key] not in already_swap:
                 # zamenjaj vrednosti v matriki
@@ -264,7 +271,7 @@ class MatrixOfRelationGraph:
             print('Number of elements: ' + str(len(tmp)))
             print('Avg value: ' + str(np.mean(l)))
             print('Full rows: ' + str(len(l[mask[0]])))
-            print()
+            print()       
 
 
 
@@ -304,7 +311,24 @@ class RelationGraph:
             print(str(len(obj.relation_y)) + '\t' + ', '.join(
                 [y.name + '-' + str(y.matrix.shape) for y in obj.relation_y]))
         print()
+        
+    def get_data(self):
+        already = set()
+        list_of_data =[]
+        for obj in self.objects.values():        
+            for relation in obj.relation_x:
+                if relation.name not in already:
+                    list_of_data.append(relation.matrix)
+                    already.add(relation.name)
 
+            for relation in obj.relation_y:
+                if relation.name not in already:
+                    list_of_data.append(relation.matrix)
+                    already.add(relation.name)
+                    
+        return list_of_data
+                    
+                    
     def add_relation(self, relation):
         tmp_relation = copy.copy(relation)
 
