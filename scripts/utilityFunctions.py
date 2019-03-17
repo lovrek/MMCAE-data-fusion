@@ -3,6 +3,8 @@ import random as r
 import relationGraph as rg
 import tempfile
 import multiprocessing
+from scipy.spatial.distance import pdist, squareform
+from fastcluster import linkage
 
 def swap_column(matrix, frm, to):
     # swap columns
@@ -430,3 +432,84 @@ def get_org_data(graph):
                 already.add(relation.name)
     
     return org_data
+
+def seriation(Z,N,cur_index):
+    '''
+        input:
+            - Z is a hierarchical tree (dendrogram)
+            - N is the number of points given to the clustering process
+            - cur_index is the position in the tree for the recursive traversal
+        output:
+            - order implied by the hierarchical tree Z
+            
+        seriation computes the order implied by a hierarchical tree (dendrogram)
+    '''
+    if cur_index < N:
+        return [cur_index]
+    else:
+        left = int(Z[cur_index-N,0])
+        right = int(Z[cur_index-N,1])
+        return (seriation(Z,N,left) + seriation(Z,N,right))
+    
+def compute_serial_matrix(dist_mat,method="ward"):
+    '''
+        input:
+            - dist_mat is a distance matrix
+            - method = ["ward","single","average","complete"]
+        output:
+            - seriated_dist is the input dist_mat,
+              but with re-ordered rows and columns
+              according to the seriation, i.e. the
+              order implied by the hierarchical tree
+            - res_order is the order implied by
+              the hierarhical tree
+            - res_linkage is the hierarhical tree (dendrogram)
+        
+        compute_serial_matrix transforms a distance matrix into 
+        a sorted distance matrix according to the order implied 
+        by the hierarchical tree (dendrogram)
+    '''
+    methods = ["ward","single","average","complete"]
+    if method not in methods:
+        raise Exception('Parameter \'method\' must be one of the following: ' + str(methods))
+    
+    N = len(dist_mat)
+    flat_dist_mat = squareform(dist_mat)
+    res_linkage = linkage(flat_dist_mat, method=method,preserve_input=True)
+    res_order = seriation(res_linkage, N, N + N-2)
+    seriated_dist = np.zeros((N,N))
+    a,b = np.triu_indices(N,k=1)
+    seriated_dist[a,b] = dist_mat[ [res_order[i] for i in a], [res_order[j] for j in b]]
+    seriated_dist[b,a] = seriated_dist[a,b]
+    
+    return seriated_dist, res_order, res_linkage
+
+def order_by_clustering(data, method, direction='all'):
+    if direction == 'row':
+        return clustering(data, method)
+    elif direction == 'col':
+        return clustering(data.T, method).T
+    elif direction == 'all':
+        tmp_data = clustering(data, method)
+        return clustering(tmp_data.T, method).T
+    else:
+        raise Exception('Parameter \'direction\' must have value row, col or all')
+        
+def clustering(data, method):    
+    row, col = data.shape
+    dist_mat = squareform(pdist(data))
+    ordered_dist_mat, res_order, res_linkage = compute_serial_matrix(dist_mat,method)
+
+    input_x = np.around(np.sum(dist_mat, axis=1))
+    org_order = dict(zip(range(row), input_x))
+    output = np.around(np.sum(ordered_dist_mat, axis=1))
+    already_used = []
+    new_data = np.empty((row, col))
+    
+    for i in range(row):
+        for key, value in org_order.items():
+            if output[i] == value and key not in already_used:
+                new_data[i] = data[key]
+                already_used.append(key)
+                break
+    return new_data
