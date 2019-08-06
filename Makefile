@@ -17,3 +17,6 @@ log:
 
 screen:
 	screen -D -R -S mag
+
+conda:
+	conda activate tensorflow

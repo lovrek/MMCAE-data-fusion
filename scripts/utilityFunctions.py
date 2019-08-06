@@ -451,7 +451,7 @@ def seriation(Z,N,cur_index):
         right = int(Z[cur_index-N,1])
         return (seriation(Z,N,left) + seriation(Z,N,right))
     
-def compute_serial_matrix(dist_mat,method="ward"):
+def compute_serial_matrix(dist_mat,method="single"):
     '''
         input:
             - dist_mat is a distance matrix
@@ -488,10 +488,10 @@ def order_by_clustering(data, method, direction='all'):
     if direction == 'row':
         return clustering(data, method)
     elif direction == 'col':
-        return clustering(data.T, method).T
+        return clustering(data.T, method)[0].T
     elif direction == 'all':
         tmp_data = clustering(data, method)
-        return clustering(tmp_data.T, method).T
+        return clustering(tmp_data.T, method)[0].T
     else:
         raise Exception('Parameter \'direction\' must have value row, col or all')
         
@@ -500,16 +500,36 @@ def clustering(data, method):
     dist_mat = squareform(pdist(data))
     ordered_dist_mat, res_order, res_linkage = compute_serial_matrix(dist_mat,method)
 
-    input_x = np.around(np.sum(dist_mat, axis=1))
-    org_order = dict(zip(range(row), input_x))
-    output = np.around(np.sum(ordered_dist_mat, axis=1))
-    already_used = []
-    new_data = np.empty((row, col))
+    new_data = np.empty((row, col))    
+    for i, val in enumerate(res_order):
+        new_data[i] = data[val]
     
-    for i in range(row):
-        for key, value in org_order.items():
-            if output[i] == value and key not in already_used:
-                new_data[i] = data[key]
-                already_used.append(key)
-                break
-    return new_data
+    return new_data, res_order
+
+# latest version for generated sameples
+def sample_generator4(matrix, num_of_samples=1, dismissed=0.2):
+    # input  => sample_generator4([1219, 116], 1000, 0.8)
+    # output => [1000, 1219, 116, 1]
+    x_size, y_size = matrix.shape
+    data = np.zeros((0, x_size, y_size, 1))
+    print('Random seed: '  + str(np.random.randint(y_size)))
+    
+    while num_of_samples > 0:
+        tmp_matrix = np.copy(matrix)
+        
+        tmp_matrix = tmp_matrix.flatten()
+        nonzeros = np.nonzero(tmp_matrix)[0]
+        dismiss = np.ceil(len(nonzeros) * dismissed)
+        
+        if dismissed < 1 and np.ceil(len(nonzeros) * dismissed) == len(nonzeros):
+            dismiss = np.ceil(len(nonzeros) * dismissed) - 1
+        
+        idx = np.random.choice(len(nonzeros), int(dismiss), replace=False)
+        mask = np.isin(nonzeros, idx)
+        remove = nonzeros[mask]
+        tmp_matrix[remove] = 0 
+            
+        data = np.r_[data, tmp_matrix.reshape(1, x_size, y_size, 1)]                
+        num_of_samples -= 1
+
+    return data

@@ -26,7 +26,7 @@ def load_decoder(folder):
     return load_model(r'/data/weights/' + str(folder) + '/decoder_weights.h5')
 
             
-def data_generator(filename, n_pack):
+def data_generator2(filename, n_pack):
     # n_pack => 100 samples of matrix
     # n_pack = batch_size
     # filename = 'ann.npz'
@@ -37,7 +37,8 @@ def data_generator(filename, n_pack):
     counter = 0
     while True:
         rand_num = np.random.randint(len(files))
-        x = f[files[rand_num]]
+        x = f[files[rand_num]].reshape(1, 131072)
+        
         yield (x, x)
         
         if counter >= n_pack:

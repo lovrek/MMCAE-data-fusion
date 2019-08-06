@@ -11,9 +11,10 @@ from relationGraph import Relation, RelationGraph, MatrixOfRelationGraph
 
 import numpy as np
 
-def resize_rows_and_columns(data, _exp):
+def resize_rows_and_columns(relation, _exp):
+    data = relation.matrix
     if _exp is None:
-        return data
+        return relation
     
     row, col = data.shape
     new_row = 1
@@ -38,15 +39,23 @@ def resize_rows_and_columns(data, _exp):
 
     if row > new_row:
         data = data[:new_row]
+        relation.x = dict(zip(relation.get_x_list()[:new_row], range(new_row)))
     elif row < new_row:
         data = np.r_[data, np.zeros((new_row - row, col))]
+        new_x = dict(zip([relation.name + '_empty_' + str(x) for x in range(new_row-row)], range(row, new_row)))
+        relation.x = uf.merge_two_dicts(relation.x, new_x)
 
     if col > new_col:
         data = data[:, :new_col]
+        relation.y = dict(zip(relation.get_y_list()[:new_col], range(new_row)))
     elif col < new_col:
         data = np.c_[data, np.zeros((data.shape[0], new_col - col))]
+        new_y = dict(zip([relation.name + '_empty_' + str(x) for x in range(new_col-col)], range(col, new_col))) 
+        relation.y = uf.merge_two_dicts(relation.y, new_y)
     
-    return data
+    relation.matrix = data
+    
+    return relation
 
 
 
@@ -84,6 +93,33 @@ def sorted_data(data, sort_alg=None):
         else:
             raise Exception('Parameter \'sort\' must be one of the following: ' + str(sort_algs))
     return data
+
+def sorted_relation_data(relation, sort_alg=None):
+    sort_algs = ['clustering']
+    if sort_alg is not None:
+        if sort_alg in sort_algs:
+            data = relation.matrix
+            data, res_order = uf.clustering(data, 'single')
+        
+            x_list = relation.get_x_list()
+            y_list = relation.get_y_list()
+            
+            new_x = {}
+            new_y = {}
+            
+            for i, val in enumerate(res_order):
+                new_x[x_list[i]] = val
+                
+            data, res_order = uf.clustering(data.T, 'single')
+            for i, val in enumerate(res_order):
+                new_y[y_list[i]] = val
+                
+            relation.matrix = data.T
+            relation.x = new_x
+            relation.y = new_y
+        else:
+            raise Exception('Parameter \'sort\' must be one of the following: ' + str(sort_algs))
+    return relation
            
 
 def load_dicty(sort=None, exp=None):
@@ -92,11 +128,12 @@ def load_dicty(sort=None, exp=None):
     exprc = 'Experimental condition'
 
     data, rn, cn = load_source(join('dicty', 'dicty.gene_annnotations.csv.gz'))
-    data = resize_rows_and_columns(data, exp)
+#     data = resize_rows_and_columns(data, exp)
     data = uf.normalization(data)
-    data = sorted_data(data, sort);
     ann = Relation(data=data, x_name=gene, y_name=go_term, name='ann',
                    x_metadata=rn, y_metadata=cn)
+    ann = resize_rows_and_columns(ann, exp)
+    ann = sorted_relation_data(ann, sort);
     print(np.min(data))
     print(np.max(data))
     print()
@@ -105,19 +142,21 @@ def load_dicty(sort=None, exp=None):
     expr = Relation(data=data, x_name=gene, y_name=exprc, name='expr',
                     x_metadata=rn, y_metadata=cn)
     expr.matrix = np.log(np.maximum(expr.matrix, np.finfo(np.float).eps))
-    expr.matrix = resize_rows_and_columns(expr.matrix, exp)
+#     expr.matrix = resize_rows_and_columns(expr.matrix, exp)
     expr.matrix = uf.normalization(expr.matrix)
-    expr.matrix = sorted_data(expr.matrix, sort);
+    expr = resize_rows_and_columns(expr, exp)
+    expr = sorted_relation_data(expr, sort);
     print(np.min(expr.matrix))
     print(np.max(expr.matrix))
     print()
 
     data, rn, cn = load_source(join('dicty', 'dicty.ppi.csv.gz'))
-    data = resize_rows_and_columns(data, exp)
+#     data = resize_rows_and_columns(data, exp)
     data = uf.normalization(data)
-    data = sorted_data(data, sort);
     ppi = Relation(data=data, x_name=gene, y_name=gene, name='ppi',
                    x_metadata=rn, y_metadata=cn)
+    ppi = resize_rows_and_columns(ppi, exp)
+    ppi = sorted_relation_data(ppi, sort);
     print(np.min(data))
     print(np.max(data))
 

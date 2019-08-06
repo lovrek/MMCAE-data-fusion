@@ -6,14 +6,13 @@ from autoencoder import seedy, AutoEncoder
 import utilityFunctions as uf
 from main import test_build_relation_graph_with_symertic_data, test_convert_graph_to_2D_matrix, test_get_matix_for_autoencoder, test_autoencoder
 from sklearn.model_selection import KFold
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, roc_auc_score, accuracy_score
 from base import load_source
 from base2 import load_dicty, load_pharma
 import utilityFunctions as uf
 import autoencoder as ae
 import multimodal as mm
 import tensorflow as tf
-
 
 from os.path import join
 import numpy as np
@@ -25,12 +24,17 @@ import matplotlib.pyplot as plt
 
 from tensorflow.keras.layers import Input, Dense, Layer, Reshape, UpSampling2D, Flatten, Masking, Dropout, concatenate, Conv2D, MaxPooling2D, BatchNormalization, Lambda
 from tensorflow.keras.models import Model, Sequential, load_model
-from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.callbacks import TensorBoard, EarlyStopping
 from tensorflow import set_random_seed
 from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras import backend as K
+from tensorflow.keras.backend import set_session
 from sklearn.metrics import mean_squared_error
+
+# numOfExperiment = 22
+# path_data = '/data/samples/multiple_inputs_clustering/dicty/'
+# path_data = '/home/lpodgorsek/data/cnn/dicty/'
 
 #numOfExperiment = 19
 # path_data = '/data/samples/multiple_inputs_clustering/dicty/'
@@ -39,7 +43,7 @@ from sklearn.metrics import mean_squared_error
 #%load_ext autoreload
 #%autoreload 2
 
-def data_generator(filenames, org_data, batch_size=1):
+def data_generator(filenames, org_data, batch_size=1, mask_col=None):
     # n_pack => 100 samples of matrix
     # n_pack = batch_size
     
@@ -67,7 +71,13 @@ def data_generator(filenames, org_data, batch_size=1):
     #             new_data = top_N_rows(data)
     #             x.append(new_data)
                 _, row, col, _ = data.shape
-                if col != 1021:
+                
+                
+                if col == 128 and mask_col is not None:
+                    data[:, :, mask_col, :] = 0
+                    _x.append(data)
+                    _y.append(org_data[i])
+                elif col != 1024:
                     _x.append(f[pack[rand_num]])
                     _y.append(org_data[i])
             
@@ -83,10 +93,11 @@ def data_generator(filenames, org_data, batch_size=1):
             y.append(_y)
             
         yield (x, y)
-        print('generator yielded a batch %d' % counter)
         
-#         if counter >= batch_size:
-#             counter = 0
+        counter += 1
+        
+        if counter >= batch_size:
+            counter = 0
             
 def top_N_rows(data, rows=100):
     _, row, col, _ = data.shape
@@ -137,7 +148,7 @@ def order_inputs(model, org_data):
     
 class MultiModal:
     
-    def __init__(self, graph=None, path=''):
+    def __init__(self, graph=None, path='', mask_col=None):
         self.input_visibles = []
         self.input_layers = []
         self.outputs_layers = []
@@ -150,6 +161,10 @@ class MultiModal:
         self.predict_data = []
         self.base_line = []
         self.shuffled_data = []
+        self.org_col = []
+        self.pred_col = []
+        self.mask_col = mask_col
+        self.metadata = []
         
         if graph is not None:
             self._read_graph(graph)
@@ -172,17 +187,33 @@ class MultiModal:
         print(relation.name + '\t' + str(relation.matrix.shape))
         
         row, col = relation.matrix.shape
-        if col == 1021:
+        if col == 1024:
             return 
+        
+        if col == 128 and self.mask_col is not None:
+            self.metadata = relation.get_y_list()
+            s = np.sum(relation.matrix, axis=0)
+#             print(s.shape)
+            
+#             mask_col = 0
+#             print(s[self.mask_col])
+            self.org_col = relation.matrix[:, self.mask_col].reshape(row)
+#             relation.matrix[:, mask_col] = 0
+#             print(max(self.org_col))
+            
         
         data = np.array(relation.matrix).reshape(1,row,col,1)
 #         new_data = top_N_rows(data)
+            
         new_data = data
         _, new_r, new_c, _ = new_data.shape
         self.org_data.append(new_data)
         self.input_data_size.append((new_r, new_c))
         self._input_layer((new_r, new_c))
-        self.filenames.append(self.path + relation.name + '.npz')
+        if col == 128:
+            self.filenames.append(self.path + '_05/' + relation.name + '.npz')
+        else:
+            self.filenames.append(self.path + relation.name + '.npz')
         
     def _input_layer(self, input_size):
         row, col = input_size
@@ -249,7 +280,7 @@ class MultiModal:
             EarlyStopping(monitor='loss', min_delta=0, patience=3, verbose=0, mode='auto')
         ]
         
-    def build_model(self, optimizer='sgd', loss='mse', gpus=1):
+    def build_model(self, optimizer='sgd', loss='mse'):
         self.inputs = concatenate(self.input_layers)
         self.inputs = Dense(64, activation="relu")(self.inputs) 
         self._decoder()
@@ -257,19 +288,16 @@ class MultiModal:
         [self._output_layer(data_size) for data_size in self.input_data_size]
         
         self.model = Model(inputs=self.input_visibles, outputs=self.outputs_layers)
-        self.model = multi_gpu_model(self.model, gpus=gpus)
+        #self.model = multi_gpu_model(self.model, gpus=4)
         self.model.compile(optimizer=optimizer, loss=loss)
         self.model.summary()
-
+        
     def fit(self, batch_size, epochs):
-        self.batch_size = batch_size
+        self.batch_size = batch_size;
         self.model.fit_generator(
-            data_generator(self.filenames, self.org_data, batch_size), 
+            data_generator(self.filenames, self.org_data, batch_size, self.mask_col), 
             steps_per_epoch=batch_size, 
-            epochs=epochs,
-            max_queue_size=2,
-            workers=1,
-            use_multiprocessing=False
+            epochs=epochs
 #             callbacks=self.callbacks
         )
         
@@ -288,7 +316,14 @@ class MultiModal:
             self.shuffled_data = shuffle_data(self.org_data)
             
         self.predict_data = self.model.predict(self.org_data)
-        self.base_line = self.model.predict(self.shuffled_data)
+        self.base_line = self.model.predict(self.shuffled_data)  
+        for data in self.predict_data:
+            print(data.shape)
+            _, row, col, _ = data.shape
+            if col == 128:
+                self.pred_col = data[:, :, 0, :].reshape(row)
+        
+        
         outputHeader = 'Data\t\t'
         outputHeader += 'Density\t\t'
         outputHeader += 'Predict\t\t'
@@ -320,22 +355,68 @@ class MultiModal:
             outputBody += str(round(max(self.predict_data[i].flatten()), 5)) + '\t'
             print(outputBody)
             
+        print()
+        print(self.org_col.shape)
+        print(self.pred_col.shape)
+        print(np.min(self.org_col))
+        print(np.max(self.org_col))
+        
+        if len(np.unique(self.org_col)) == 1: # bug in roc_auc_score
+            term_auc = accuracy_score(self.org_col, np.rint(self.pred_col))
+        else: 
+            term_auc = roc_auc_score(self.org_col, self.pred_col)
+            
+#         term_auc = roc_auc_score(self.org_col, self.pred_col)
+        print('AUC: ' + str(term_auc))
+        return term_auc
+              
        
-       
-if __name__ == "__main__":
+if __name__ == "__main__":   
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
+    set_session(tf.Session(config=config))
     
     path_data = '/home/lpodgorsek/data/cnn/dicty/'
-    numOfExperiment = 21
-    gpus=2
+    numOfExperiment = 24
+    columns = []
     
-    graph1 = load_dicty('clustering', 2)
-    
-    model = MultiModal(graph=graph1, path=path_data)
-    # model.build_model(optimizer='sgd', loss='mse')
-    model.build_model(optimizer='adadelta', loss='binary_crossentropy', gpus=gpus)
-    model.fit(gpus, 10)
-    model.save('/home/lpodgorsek/data/multimodal/dicty/', str(numOfExperiment))
-    model.predict()
+#     graph1 = load_dicty('clustering', 2)
+    graph1 = load_dicty(None, 2)
+    for obj in graph1.objects.values():        
+            for relation in obj.relation_x:
+                if relation.name == 'ann':
+                    for i, value in enumerate( np.sum(relation.matrix, axis=0)):
+                        if value > 19 and value < 2000:
+                            columns.append(i)
+
+    print(len(columns))
+      
+#     columns = [0]
+    auc = []
+    for i, col in enumerate(columns):
+        if col < 38:
+            continue
+            
+        model = MultiModal(graph=graph1, path=path_data, mask_col=col)
+        # model.build_model(optimizer='sgd', loss='mse')
+        model.build_model(optimizer='adadelta', loss='binary_crossentropy')
+        model.fit(4,500)
+        # model.save('/home/lpodgorsek/data/multimodal/dicty/', str(numOfExperiment))
+        auc_col = model.predict()
+        file = open('/home/lpodgorsek/mag/scripts/ConvAE-2_output.txt','a')
+        file.write('(' + str(col + 1) + '/' + str(116) + '): ' + model.metadata[col] + ' AUC: ' + str(auc_col) + '\n')
+        file.close()
+        
+        auc.append(auc_col)
+        
+        del model
+        
+
+    file = open('/home/lpodgorsek/mag/scripts/ConvAE-2_output_copy.txt','w')     
+        
+    print('AUC')
+    for i, col in enumerate(columns):
+        print('(' + str(col ) + '/' + str(116) + '): ' + model.metadata[col] + ' AUC: ' + str(auc[i]))
+        file.write('(' + str(col ) + '/' + str(116) + '): ' + model.metadata[col] + ' AUC: ' + str(auc[i]))
+
+    file.close() 

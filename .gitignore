@@ -6,3 +6,5 @@ scripts/.*
 scripts/__pycache__/
 scripts/.*/*
 scripts/.ipynb_checkpoints/
+Final Results/.ipynb_checkpoints/
+Experiments/.ipynb_checkpoints/
