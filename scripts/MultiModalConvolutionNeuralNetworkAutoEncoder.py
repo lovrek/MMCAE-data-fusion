@@ -576,7 +576,7 @@ if __name__ == "__main__":
     folder = '/home/lpodgorsek/data/cnn/dicty/_50/'
     graph1 = load_dicty('clustering', 2)
 
-    model = MultiModal(graph=graph1, path=folder, num_of_test_cells=1000, load_test_cells=False)
+    model = MultiModal(graph=graph1, path=folder, num_of_test_cells=1000, load_test_cells=True)
     #     model.build_model(optimizer='sgd', loss='mse')
     #     loss='binary_crossentropy'
     model.build_model(optimizer='adadelta', loss='binary_crossentropy', metrics=['mae', 'acc'], gpu=GPU)
