@@ -58,6 +58,43 @@ def resize_rows_and_columns(relation, _exp):
     return relation
 
 
+def resize_rows_and_columns_data(data, _exp):
+    if _exp is None:
+        return relation
+    
+    row, col = data.shape
+    new_row = 1
+    new_col = 1
+
+    for i in range(1,1000):
+        exp = np.power(_exp,i)
+        if row < exp and new_row == 1:
+            if (exp - row)/row > 0.5:
+                new_row = np.power(_exp,i-1)
+            else:
+                new_row = exp
+                
+        if col < exp and new_col == 1:
+            if (exp - col)/col > 0.5:
+                new_col = np.power(_exp, i-1)
+            else:
+                new_col = exp
+
+        if new_row != 1 and new_col != 1:
+            break
+
+    if row > new_row:
+        data = data[:new_row]
+    elif row < new_row:
+        data = np.r_[data, np.zeros((new_row - row, col))]
+
+    if col > new_col:
+        data = data[:, :new_col]
+    elif col < new_col:
+        data = np.c_[data, np.zeros((data.shape[0], new_col - col))]
+    
+    return data
+
 
 def load_source(source_path, delimiter=',', filling_value='0'):
     """Load and return a data source.

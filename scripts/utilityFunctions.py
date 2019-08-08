@@ -491,7 +491,7 @@ def order_by_clustering(data, method, direction='all'):
         return clustering(data.T, method)[0].T
     elif direction == 'all':
         tmp_data = clustering(data, method)
-        return clustering(tmp_data.T, method)[0].T
+        return clustering(tmp_data[0].T, method)[0].T
     else:
         raise Exception('Parameter \'direction\' must have value row, col or all')
         
