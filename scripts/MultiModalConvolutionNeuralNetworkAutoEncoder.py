@@ -77,7 +77,7 @@ def remove_cells_from_data(data, list_of_cells):
     for index, _ in list_of_cells:
         data_flatten[int(index)] = 0
         
-    return data.reshape(1, row, col, 1)
+    return data_flatten.reshape(1, row, col, 1)
         
     
     
@@ -216,6 +216,7 @@ class MultiModal:
         self.fake_org_data = []
         self.activation = 'relu'
         self.load_test_cells = load_test_cells
+        self.h = None
         
         if graph is not None:
             self._read_graph(graph)
@@ -386,13 +387,13 @@ class MultiModal:
         
     def fit(self, batch_size, epochs):
         self.batch_size = batch_size;
-        self.model.fit_generator(
+        self.h = self.model.fit_generator(
             data_generator(self.filenames, self.fake_org_data, batch_size, self.saved_cells_for_test, self.is_first_iteration), 
             steps_per_epoch=batch_size, 
             epochs=epochs,
             callbacks=self.callbacks
         )
-        self.is_first_iteration = False
+        
         
     def save(self, path, version):
         self.model.save(path + 'experiment_' + version + '.h5')
@@ -422,9 +423,11 @@ class MultiModal:
         
     def predict_generator(self, batch_size=10, iteration=1):
         predict = self.model.predict_generator(
-            data_generator(self.filenames, self.fake_org_data, batch_size),
+            data_generator(self.filenames, self.fake_org_data, batch_size, self.is_first_iteration),
             steps=100
         )
+        
+        self.is_first_iteration = False
 
         for i in range(len(self.org_data)):
             _,row, col,_ = predict[i].shape
@@ -570,10 +573,19 @@ if __name__ == "__main__":
     batch_size = 3 * GPU
     # path_data = '/data/samples/multiple_inputs_clustering/dicty/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_00/'
+    folder = '/home/lpodgorsek/data/cnn/dicty/_01/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_02/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_03/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_04/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_05/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_06/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_07/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_08/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_09/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_10/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_15/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_25/'
-    folder = '/home/lpodgorsek/data/cnn/dicty/_50/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_50/'
     graph1 = load_dicty('clustering', 2)
 
     model = MultiModal(graph=graph1, path=folder, num_of_test_cells=1000, load_test_cells=True)
@@ -585,6 +597,25 @@ if __name__ == "__main__":
     model.predictMultiGPU(random=False, gpu=GPU)
     model.predict_hidden_cells()
     model.predict_generator(batch_size, 1)
+    
+#     acc = model.h.history['acc']
+# #     val_acc = model.history['val_acc']
+#     loss = model.h.history['loss']
+# #     val_loss = model.history['val_loss']
+#     epochs = range(1, len(acc) + 1)
+#     plt.plot(epochs, acc, 'r', label='Training acc')
+# #     plt.plot(epochs, val_acc, 'b', label='Validation acc')
+#     plt.title('Training and validation accuracy')
+#     plt.legend()
+#     plt.savefig(folder + 'accuracy.png')
+#     plt.figure()
+#     plt.plot(epochs, loss, 'r', label='Training loss')
+# #     plt.plot(epochs, val_loss, 'b', label='Validation loss')
+#     plt.title('Training and validation loss')
+#     plt.legend()
+#     plt.savefig(folder + 'loss.png')
+
+#     exit()
 
     model.set_path_to_files(folder + 'predict_1_')
     model.fit(batch_size, epchos)
@@ -602,21 +633,21 @@ if __name__ == "__main__":
 
     model.set_path_to_files(folder + 'predict_3_')
     model.fit(batch_size, epchos)
-#     model.save('/home/lpodgorsek/data/multimodal/dicty/', str(numOfExperiment) + '_4')
+#     model.save(folder, str(numOfExperiment) + '_4')
 #     model.predictMultiGPU(random=False, gpu=GPU)
 #     model.predict_hidden_cells()
 #     model.predict_generator(batch_size, 4)
 
 #     model.set_path_to_files(folder + 'predict_4_')
 #     model.fit(batch_size, epchos)
-#     model.save('/home/lpodgorsek/data/multimodal/dicty/', str(numOfExperiment) + '5')
+#     model.save(folder, str(numOfExperiment) + '_5')
 #     model.predictMultiGPU(random=False, gpu=GPU)
 #     model.predict_hidden_cells()
 #     model.predict_generator(batch_size, 5)
 
 #     model.set_path_to_files(folder + 'predict_5_')
 #     model.fit(batch_size, epchos)
-#     model.save('/home/lpodgorsek/data/multimodal/dicty/', str(numOfExperiment) + '_6')
+#     model.save(folder, str(numOfExperiment) + '_6')
 #     model.predictMultiGPU(random=False, gpu=GPU)
 #     model.predict_hidden_cells()
 #     model.predict_generator(batch_size, 6)
