@@ -412,9 +412,9 @@ class MultiModal:
                 predict_val = self.predict_data[j].flatten()[idx]
                 diff_abs = np.abs(self.predict_data[j].flatten()[idx] - val)
                 avg_diff[j] += diff_abs
-                print(str(self.saved_cells_for_test[j][i]) + ' ' + format(predict_val, '.5f') + ' ' + format(val, '.5f') + ' ' + format(diff_abs, '.5f'), end=" \t")
-            print()
-        print("---------------------------------------------------------------------------------------")
+#                 print(str(self.saved_cells_for_test[j][i]) + ' ' + format(predict_val, '.5f') + ' ' + format(val, '.5f') + ' ' + format(diff_abs, '.5f'), end=" \t")
+#             print()
+#         print("---------------------------------------------------------------------------------------")
 
         for i in range(len(avg_diff)):
             val = avg_diff[i]*100/len(self.saved_cells_for_test[0])
@@ -568,17 +568,18 @@ class MultiModal:
 if __name__ == "__main__":
     #     np.random.seed(42)
     numOfExperiment = 'model_weigth'
-    epchos = 50
+    epchos = 20
     GPU = 3
     batch_size = 3 * GPU
     # path_data = '/data/samples/multiple_inputs_clustering/dicty/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_00/'
-    folder = '/home/lpodgorsek/data/cnn/dicty/_01/'
+#     folder = '/home/lpodgorsek/data/cnn/dicty/_01/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_02/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_03/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_04/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_05/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_06/'
+    folder = '/home/lpodgorsek/data/cnn/dicty/_061/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_07/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_08/'
 #     folder = '/home/lpodgorsek/data/cnn/dicty/_09/'
@@ -633,26 +634,96 @@ if __name__ == "__main__":
 
     model.set_path_to_files(folder + 'predict_3_')
     model.fit(batch_size, epchos)
-#     model.save(folder, str(numOfExperiment) + '_4')
+    model.save(folder, str(numOfExperiment) + '_4')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 4)
+
+    model.set_path_to_files(folder + 'predict_4_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_5')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 5)
+
+    model.set_path_to_files(folder + 'predict_5_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_6')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 6)
+    
+    model.set_path_to_files(folder + 'predict_6_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_7')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 7)
+    
+    model.set_path_to_files(folder + 'predict_7_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_8')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 8)
+    
+    model.set_path_to_files(folder + 'predict_8_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_9')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 9)
+    
+    model.set_path_to_files(folder + 'predict_9_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_10')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 10)
+    
+    model.set_path_to_files(folder + 'predict_10_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_11')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 11)
+    
+    model.set_path_to_files(folder + 'predict_11_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_12')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 12)
+    
+    model.set_path_to_files(folder + 'predict_12_')
+    model.fit(batch_size, epchos)
+    model.save(folder, str(numOfExperiment) + '_13')
+    model.predictMultiGPU(random=False, gpu=GPU)
+    model.predict_hidden_cells()
+    model.predict_generator(batch_size, 13)
+    
+    model.set_path_to_files(folder + 'predict_13_')
+    model.fit(batch_size, epchos)
+#     model.save(folder, str(numOfExperiment) + '_14')
 #     model.predictMultiGPU(random=False, gpu=GPU)
 #     model.predict_hidden_cells()
-#     model.predict_generator(batch_size, 4)
-
-#     model.set_path_to_files(folder + 'predict_4_')
+#     model.predict_generator(batch_size, 14)
+    
+#     model.set_path_to_files(folder + 'predict_14_')
 #     model.fit(batch_size, epchos)
-#     model.save(folder, str(numOfExperiment) + '_5')
+#     model.save(folder, str(numOfExperiment) + '_15')
 #     model.predictMultiGPU(random=False, gpu=GPU)
 #     model.predict_hidden_cells()
-#     model.predict_generator(batch_size, 5)
-
-#     model.set_path_to_files(folder + 'predict_5_')
+#     model.predict_generator(batch_size, 15)
+    
+#     model.set_path_to_files(folder + 'predict_15_')
 #     model.fit(batch_size, epchos)
-#     model.save(folder, str(numOfExperiment) + '_6')
+#     model.save(folder, str(numOfExperiment) + '_16')
 #     model.predictMultiGPU(random=False, gpu=GPU)
 #     model.predict_hidden_cells()
-#     model.predict_generator(batch_size, 6)
+#     model.predict_generator(batch_size, 16)
 
-#     model.set_path_to_files(folder + 'predict_6_')
+#     model.set_path_to_files(folder + 'predict_16_')
 #     model.fit(batch_size, epchos)
     model.save(folder, str(numOfExperiment))
     model.predictMultiGPU(random=False, gpu=GPU)
